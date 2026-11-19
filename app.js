@@ -52,11 +52,22 @@
   const views = {
     generator: document.getElementById("view-generator"),
     practice: document.getElementById("view-practice"),
+    mock: document.getElementById("view-mock"),
     diagnostic: document.getElementById("view-diagnostic"),
     sources: document.getElementById("view-sources"),
     profile: document.getElementById("view-profile"),
     admin: document.getElementById("view-admin")
   };
+
+  // Mock Exam DOM
+  const btnStartMock = document.getElementById("btn-start-mock");
+  const mockStickyBar = document.getElementById("mock-sticky-bar");
+  const mockTimerEl = document.getElementById("mock-timer");
+  const mockAnsweredCount = document.getElementById("mock-answered-count");
+  const btnSubmitMock = document.getElementById("btn-submit-mock");
+  const btnRestartMock = document.getElementById("btn-restart-mock");
+  const mockResultBox = document.getElementById("mock-result-box");
+  const mockExamBody = document.getElementById("mock-exam-body");
 
   // Admin DOM
   const navAdminBtn = document.getElementById("nav-admin-btn");
@@ -470,9 +481,10 @@
     lectureTitle.textContent = lesson.title;
     lectureSummary.textContent = lesson.summary;
     lectureObjectives.innerHTML = lesson.objectives.map((o) => `<li>${o}</li>`).join("");
-    lectureBody.innerHTML = lesson.sections
-      .map((sec) => `<h3>${sec.heading}</h3><p>${sec.text}</p>`)
-      .join("");
+    const depthGuide = getLevelDepthHtml(subject.id, state.level);
+    lectureBody.innerHTML =
+      lesson.sections.map((sec) => `<h3>${sec.heading}</h3><p>${sec.text}</p>`).join("") +
+      depthGuide;
     lectureExample.textContent = lesson.example;
     lectureTakeaway.textContent = lesson.takeaway;
 
@@ -1589,6 +1601,229 @@
       setDiagnosticMode("test");
     });
   }
+
+  // ---------------------------------------------------------
+  // In-Depth Level-Tailored Lecture Modules (Bám sát đề 2026)
+  // ---------------------------------------------------------
+  function getLevelDepthHtml(subjectId, level) {
+    const guides = {
+      beginner: {
+        heading: "3. Lộ trình tiếp cận & Checklist tránh mất điểm (Mức Cơ bản 600–750đ)",
+        points: [
+          "Đọc chậm, gạch chân đúng từ khóa trọng tâm trong câu hỏi (ví dụ: KHÔNG đúng, SAI, ít nhất, tối đa).",
+          "Áp dụng đúng 1 công thức hoặc quy tắc chuẩn cho từng dạng bài, không đoán mò khi chưa kiểm tra điều kiện cơ bản.",
+          "Dành tối đa 1 phút 15 giây cho mỗi câu nền tảng; nếu gặp câu tính toán dài hãy đánh dấu để quay lại sau."
+        ],
+        examNote: "Trong đề ĐGNL ĐHQG-HCM 2026, nhóm câu mức Cơ bản chiếm khoảng 40–45% tổng số câu. Nắm chắc nhóm này giúp bạn đạt vững mốc 650–750 điểm."
+      },
+      intermediate: {
+        heading: "3. Kỹ thuật xử lý nhanh & Nhận diện dạng đề 2026 (Mức Trung cấp 750–900đ)",
+        points: [
+          "Kết hợp loại trừ 2 phương án nhiễu rõ ràng trước khi tính toán chi tiết hoặc đối chiếu lại ngữ liệu.",
+          "Với nhóm câu đọc hiểu/số liệu liên hoàn (3–5 câu chung 1 dữ kiện), đọc lướt câu hỏi trước để khoanh vùng đúng đoạn văn hoặc hàng/cột cần tính.",
+          "Ghi nhớ các bẫy kinh điển của đề 2026: nhầm tỷ trọng (%) với giá trị tuyệt đối, nhầm nghĩa Hán Việt gần âm, nhầm điều kiện biến cố đối."
+        ],
+        examNote: "Để vượt mốc 850–900 điểm, bạn cần hoàn thành nhóm câu Trung cấp với độ chính xác trên 85% và giữ nhịp độ đều 1,2 phút/câu."
+      },
+      advanced: {
+        heading: "3. Tư duy phân loại 900–1100+đ & Chiến thuật chống bẫy đề 2026",
+        points: [
+          "Nhận diện ngay câu hỏi mang trọng số IRT cao (câu suy luận sâu, bài toán tối ưu quy hoạch tuyến tính, xác suất toàn phần/Bayes, logic nhiều ràng buộc).",
+          "Kiểm chứng ngược đáp án bằng cách thử trường hợp biên hoặc đối chiếu với toàn bộ ràng buộc logic để tránh bẫy 'đúng một phần'.",
+          "Tối ưu thời gian: dùng công thức rút gọn (đỉnh parabol, mệnh đề phản đảo, tỷ lệ tương đối) để tiết kiệm 30–40 giây mỗi câu vận dụng cao."
+        ],
+        examNote: "Theo thang điểm IRT của ĐHQG-HCM, trả lời đúng các câu phân loại ở mức Nâng cao giúp điểm số tăng vượt trội so với câu dễ."
+      }
+    };
+    const g = guides[level] || guides.beginner;
+    const subjectFocus = {
+      "lang-vi": "Trọng tâm đề 2026 (Tiếng Việt): Chính tả Hán Việt (sỗ sàng, súc tích, giành/dành), lỗi thiếu chủ/vị ngữ, phong cách ngôn ngữ, thi pháp thơ Đường luật và đọc hiểu văn bản thông tin/nghị luận.",
+      "lang-en": "Trọng tâm đề 2026 (Tiếng Anh): Phrasal verbs, sự hòa hợp chủ–vị, mệnh đề quan hệ rút gọn, Paraphrase (viết lại câu tương đương) và 2 bài đọc hiểu học thuật (từ quy chiếu, suy luận, ý chính).",
+      math: "Trọng tâm đề 2026 (Toán học): Hàm số & tiệm cận, giới hạn/cấp số nhân lùi vô hạn, xác suất biến cố đối & xác suất toàn phần, quy hoạch tuyến tính tối ưu doanh thu và hình học tọa độ Oxyz/Oxy.",
+      science: "Trọng tâm đề 2026 (Tư duy Khoa học): Bài toán Logic sắp xếp/phân nhóm (3 câu/chùm), phân tích biểu đồ cơ cấu & bảng lợi nhuận, cùng các cụm Suy luận Khoa học (áp suất hơi bão hòa, truyền tải điện, sinh thái, lịch sử)."
+    };
+
+    return `
+      <div class="lecture-depth-box">
+        <h3>${g.heading}</h3>
+        <ul>
+          ${g.points.map((p) => `<li>${p}</li>`).join("")}
+        </ul>
+        <p style="margin:10px 0 6px 0; font-size:0.9rem;"><strong>Bám sát đề thi 2026:</strong> ${subjectFocus[subjectId] || ""}</p>
+        <p class="muted small" style="margin:0;">${g.examNote}</p>
+      </div>
+    `;
+  }
+
+  // ---------------------------------------------------------
+  // Mock Exam 2026 (40 câu / 50 phút / Chấm thang 1.200 điểm)
+  // ---------------------------------------------------------
+  let mockTimerInterval = null;
+  let mockSecondsLeft = 50 * 60;
+  let mockSubmitted = false;
+
+  function formatTimer(sec) {
+    const m = String(Math.floor(sec / 60)).padStart(2, "0");
+    const s = String(sec % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function stopMockTimer() {
+    if (mockTimerInterval) {
+      clearInterval(mockTimerInterval);
+      mockTimerInterval = null;
+    }
+  }
+
+  function renderMockExam() {
+    if (typeof MOCK_EXAM_2026 === "undefined" || !mockExamBody) return;
+    let qNum = 0;
+    const letters = ["A", "B", "C", "D"];
+
+    mockExamBody.innerHTML = MOCK_EXAM_2026.sections
+      .map((sec) => {
+        const itemsHtml = sec.questions
+          .map((item) => {
+            qNum++;
+            return `
+              <div class="quiz-item" data-mock-id="${item.id}">
+                ${item.passage ? `<div class="mock-passage">${item.passage}</div>` : ""}
+                <p class="quiz-question">Câu ${qNum}: ${item.q}</p>
+                <div class="quiz-options">
+                  ${item.options
+                    .map(
+                      (opt, idx) => `
+                    <label class="quiz-option">
+                      <input type="radio" name="mock_${item.id}" value="${idx}" />
+                      <span><strong>${letters[idx]}.</strong> ${opt}</span>
+                    </label>
+                  `
+                    )
+                    .join("")}
+                </div>
+                <div class="diag-exp hidden" id="mock-exp-${item.id}"></div>
+              </div>
+            `;
+          })
+          .join("");
+
+        return `
+          <div class="diag-section-block">
+            <h4 class="diag-section-title">${sec.name}</h4>
+            <div class="diag-section-questions">${itemsHtml}</div>
+          </div>
+        `;
+      })
+      .join("");
+
+    mockExamBody.querySelectorAll('input[type="radio"]').forEach((radio) => {
+      radio.addEventListener("change", () => {
+        let answered = 0;
+        MOCK_EXAM_2026.sections.forEach((sec) => {
+          sec.questions.forEach((q) => {
+            if (mockExamBody.querySelector(`input[name="mock_${q.id}"]:checked`)) answered++;
+          });
+        });
+        mockAnsweredCount.textContent = `Đã làm: ${answered} / ${MOCK_EXAM_2026.totalQuestions}`;
+      });
+    });
+  }
+
+  function startMockExam() {
+    stopMockTimer();
+    mockSubmitted = false;
+    mockSecondsLeft = MOCK_EXAM_2026.durationMinutes * 60;
+    mockTimerEl.textContent = formatTimer(mockSecondsLeft);
+    mockAnsweredCount.textContent = `Đã làm: 0 / ${MOCK_EXAM_2026.totalQuestions}`;
+    mockResultBox.classList.add("hidden");
+    mockResultBox.innerHTML = "";
+    btnSubmitMock.classList.remove("hidden");
+    btnRestartMock.classList.add("hidden");
+    mockStickyBar.classList.remove("hidden");
+    mockExamBody.classList.remove("hidden");
+
+    renderMockExam();
+
+    mockTimerInterval = setInterval(() => {
+      mockSecondsLeft--;
+      mockTimerEl.textContent = formatTimer(Math.max(0, mockSecondsLeft));
+      if (mockSecondsLeft <= 0) {
+        gradeMockExam(true);
+      }
+    }, 1000);
+    announce("Đã bắt đầu bài thi thử ĐGNL 2026 (50 phút).");
+  }
+
+  function gradeMockExam(autoSubmitted = false) {
+    if (mockSubmitted) return;
+    mockSubmitted = true;
+    stopMockTimer();
+
+    const letters = ["A", "B", "C", "D"];
+    let totalCorrect = 0;
+    const breakdown = [];
+
+    MOCK_EXAM_2026.sections.forEach((sec) => {
+      let secCorrect = 0;
+      sec.questions.forEach((q) => {
+        const checked = mockExamBody.querySelector(`input[name="mock_${q.id}"]:checked`);
+        const isCorrect = checked && Number(checked.value) === q.answer;
+        if (isCorrect) {
+          secCorrect++;
+          totalCorrect++;
+        }
+        const expEl = document.getElementById(`mock-exp-${q.id}`);
+        if (expEl) {
+          expEl.className = `diag-exp ${isCorrect ? "correct" : "incorrect"}`;
+          expEl.innerHTML = `<strong>${isCorrect ? "Chính xác!" : `Chưa đúng (Đáp án: ${letters[q.answer]}).`}</strong> ${q.solution}`;
+          expEl.classList.remove("hidden");
+        }
+      });
+      breakdown.push({
+        title: sec.name.replace(" (10 câu)", ""),
+        score: secCorrect,
+        total: sec.questions.length
+      });
+    });
+
+    const total = MOCK_EXAM_2026.totalQuestions;
+    const estScore1200 = Math.round((totalCorrect / total) * 1200);
+    const percent = Math.round((totalCorrect / total) * 100);
+
+    recordQuizResult("mock-2026", "Thi thử ĐGNL 2026", state.level, totalCorrect, total, percent);
+
+    mockResultBox.innerHTML = `
+      <div class="result-hero-top">
+        <div>
+          <span class="muted small">${autoSubmitted ? "HẾT GIỜ — TỰ ĐỘNG NỘP BÀI" : "KẾT QUẢ THI THỬ ĐGNL ĐHQG-HCM 2026"}</span>
+          <div class="result-level-big">Điểm quy đổi ước lượng: <span class="level-badge level-intermediate" style="font-size:1.1rem; padding:6px 14px;">${estScore1200} / 1.200 điểm</span></div>
+        </div>
+        <div class="score-pill" style="font-size:1rem; padding:8px 14px;">Đúng: ${totalCorrect} / ${total} câu (${percent}%)</div>
+      </div>
+      <div class="breakdown-grid">
+        ${breakdown
+          .map(
+            (b) => `
+          <div class="breakdown-item">
+            <span>${b.title}</span>
+            <strong>${b.score} / ${b.total} câu đúng</strong>
+          </div>
+        `
+          )
+          .join("")}
+      </div>
+      <p class="muted small" style="margin:0;">Kéo xuống dưới để xem đáp án đúng và lời giải chi tiết cho toàn bộ 40 câu.</p>
+    `;
+    mockResultBox.classList.remove("hidden");
+    btnSubmitMock.classList.add("hidden");
+    btnRestartMock.classList.remove("hidden");
+    mockResultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    announce(`Hoàn thành thi thử: ${totalCorrect}/${total} câu (ước lượng ${estScore1200}/1200 điểm).`);
+  }
+
+  if (btnStartMock) btnStartMock.addEventListener("click", startMockExam);
+  if (btnSubmitMock) btnSubmitMock.addEventListener("click", () => gradeMockExam(false));
+  if (btnRestartMock) btnRestartMock.addEventListener("click", startMockExam);
 
   // ---------------------------------------------------------
   // Bootstrap
