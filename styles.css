@@ -2069,11 +2069,21 @@ html[data-theme="contrast"] .btn-primary {
   border: 1px solid var(--border);
 }
 
-.onb-guide-item strong {
+.onb-guide-item > strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   color: var(--primary);
-  font-size: 0.95rem;
+  font-size: 0.96rem;
+}
+
+.onb-guide-item ul {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+  font-size: 0.88rem;
+}
+
+.onb-guide-item li {
+  margin-bottom: 6px;
 }
 
 .onb-guide-item p {
