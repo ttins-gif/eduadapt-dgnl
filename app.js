@@ -895,28 +895,62 @@
   tabLogin.addEventListener("click", () => setAuthTab("login"));
   tabRegister.addEventListener("click", () => setAuthTab("register"));
 
+  const GOOGLE_CLIENT_ID = "991004765221-t5n34ms4qa04mj43o2hobf5adp01o6r1.apps.googleusercontent.com";
+  let googleTokenClient = null;
+
   btnGoogleOpen.addEventListener("click", () => {
     clearAuthError();
     if (window.location.hostname.endsWith("netlify.app")) {
       window.location.href = "/.netlify/identity/authorize?provider=google";
       return;
     }
-    const email = window.prompt("Nhập địa chỉ Gmail của bạn để đăng nhập nhanh (ví dụ: tenban@gmail.com):");
-    if (!email) return;
-    const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail.includes("@")) {
-      showAuthError("Vui lòng nhập địa chỉ Gmail hợp lệ.");
+    if (window.google && window.google.accounts && window.google.accounts.oauth2) {
+      if (!googleTokenClient) {
+        googleTokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: GOOGLE_CLIENT_ID,
+          scope: "openid email profile",
+          callback: async (tokenResponse) => {
+            if (!tokenResponse || !tokenResponse.access_token) {
+              showAuthError("Đăng nhập Google bị hủy hoặc không thành công.");
+              return;
+            }
+            try {
+              const res = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+                headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+              });
+              const info = await res.json();
+              if (!info || !info.email) {
+                showAuthError("Không lấy được thông tin tài khoản Google.");
+                return;
+              }
+              const cleanEmail = info.email.toLowerCase();
+              const users = getUsers();
+              let user = users.find((u) => u.email === cleanEmail);
+              if (!user) {
+                user = {
+                  name: info.name || cleanEmail.split("@")[0],
+                  email: cleanEmail,
+                  avatarUrl: info.picture || "",
+                  provider: "google",
+                  level: state.level
+                };
+                users.push(user);
+                saveUsers(users);
+              } else if (info.picture && !user.avatarUrl) {
+                user.avatarUrl = info.picture;
+                saveUsers(users);
+              }
+              signInUser(user);
+            } catch (_) {
+              showAuthError("Lỗi kết nối khi lấy thông tin tài khoản Google.");
+            }
+          }
+        });
+      }
+      googleTokenClient.requestAccessToken({ prompt: "select_account" });
       return;
     }
-    const displayName = cleanEmail.split("@")[0];
-    const users = getUsers();
-    let user = users.find((u) => u.email === cleanEmail);
-    if (!user) {
-      user = { name: displayName, email: cleanEmail, provider: "google", level: state.level };
-      users.push(user);
-      saveUsers(users);
-    }
-    signInUser(user);
+    showAuthError("Đang tải dịch vụ Google, vui lòng thử lại sau 2 giây.");
   });
 
   function signInUser(user) {
