@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EduAdapt ĐGNL — Ôn luyện Đánh giá Năng lực ĐHQG-HCM</title>
-  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Chuyển đến nội dung chính</a>
@@ -154,7 +154,7 @@
 
       <nav class="sidebar-nav" aria-label="Danh mục chức năng">
         <button type="button" class="sidebar-btn active" data-view="generator">
-          <span>Bài giảng</span>
+          <span>Lý thuyết</span>
         </button>
         <button type="button" class="sidebar-btn" data-view="practice">
           <span>Luyện tập</span>
@@ -182,13 +182,33 @@
       <section id="view-generator" class="view-section active" aria-labelledby="gen-heading">
         <div class="hero-card">
           <div>
-            <h2 id="gen-heading">Bài giảng ĐGNL ĐHQG-HCM</h2>
+            <h2 id="gen-heading">Lý thuyết ĐGNL ĐHQG-HCM (V-ACT)</h2>
             <p class="muted">
-              Tổng hợp từ nguồn học thuật kiểm duyệt và điều chỉnh theo trình độ của bạn.
+              Hệ thống lý thuyết đầy đủ, chi tiết cho cả 4 phần thi V-ACT, tự động điều chỉnh độ sâu theo trình độ của bạn.
             </p>
           </div>
           <button type="button" class="btn btn-secondary" id="btn-open-diagnostic">
             Đánh giá trình độ
+          </button>
+        </div>
+
+        <!-- 4 phần tương ứng với 4 phần trong ĐGNL V-ACT -->
+        <div class="theory-tabs" role="tablist" aria-label="4 phần lý thuyết ĐGNL V-ACT">
+          <button type="button" class="theory-tab active" data-theory-subj="lang-vi" role="tab" aria-selected="true">
+            <strong>Phần 1.1: Tiếng Việt</strong>
+            <span>30 câu • Ngữ pháp, Tu từ, Đọc hiểu</span>
+          </button>
+          <button type="button" class="theory-tab" data-theory-subj="lang-en" role="tab" aria-selected="false">
+            <strong>Phần 1.2: Tiếng Anh</strong>
+            <span>30 câu • Ngữ pháp, Lỗi sai, Paraphrase</span>
+          </button>
+          <button type="button" class="theory-tab" data-theory-subj="math" role="tab" aria-selected="false">
+            <strong>Phần 2: Toán học</strong>
+            <span>30 câu • Giải tích, Xác suất, Oxyz</span>
+          </button>
+          <button type="button" class="theory-tab" data-theory-subj="science" role="tab" aria-selected="false">
+            <strong>Phần 3: Tư duy Khoa học</strong>
+            <span>30 câu • Logic, Số liệu, Khoa học</span>
           </button>
         </div>
 
@@ -225,7 +245,7 @@
               <span>Nguồn học thuật đã qua kiểm duyệt.</span>
             </div>
             <button type="submit" class="btn btn-primary" id="btn-generate">
-              Tạo bài giảng
+              Cập nhật lý thuyết
             </button>
           </div>
         </form>
@@ -745,8 +765,8 @@
   </div>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="data.js?v=21"></script>
-  <script src="mock_exam.js?v=21"></script>
-  <script src="app.js?v=21"></script>
+  <script src="data.js?v=22"></script>
+  <script src="mock_exam.js?v=22"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>
