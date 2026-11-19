@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-font-scale="1" data-spacing="normal">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduAdapt ĐGNL — Ôn luyện Đánh giá Năng lực ĐHQG-HCM</title>
+  <link rel="stylesheet" href="styles.css?v=12" />
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Chuyển đến nội dung chính</a>
+
+  <!-- Thanh công cụ Trợ năng (Accessibility Bar) -->
+  <div id="a11y-bar" class="a11y-bar hidden" role="region" aria-label="Công cụ hỗ trợ tiếp cận">
+    <div class="a11y-inner">
+      <div class="a11y-group">
+        <button type="button" class="a11y-btn mobile-menu-btn" id="mobile-menu-toggle" aria-label="Mở menu điều hướng" aria-expanded="false">
+          ☰ Menu
+        </button>
+        <span class="a11y-label">Trợ năng:</span>
+        <div class="btn-group font-stepper" role="group" aria-label="Điều chỉnh cỡ chữ">
+          <button type="button" class="a11y-btn" id="font-dec" aria-label="Giảm cỡ chữ" title="Giảm cỡ chữ">−</button>
+          <button type="button" class="a11y-btn font-percent-btn" id="font-reset" aria-label="Đặt lại cỡ chữ 100%" title="Bấm để đặt lại 100%">100%</button>
+          <button type="button" class="a11y-btn" id="font-inc" aria-label="Tăng cỡ chữ" title="Tăng cỡ chữ">+</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="Chế độ màu sắc">
+          <button type="button" class="a11y-btn active" data-theme-btn="light" aria-pressed="true">☀️ Sáng</button>
+          <button type="button" class="a11y-btn" data-theme-btn="dark" aria-pressed="false">🌙 Tối</button>
+          <button type="button" class="a11y-btn" data-theme-btn="contrast" aria-pressed="false">👁️ Tương phản cao</button>
+        </div>
+        <button type="button" class="a11y-btn" id="toggle-spacing" aria-pressed="false" title="Tăng giãn dòng giúp dễ đọc hơn">
+          📖 Dễ đọc
+        </button>
+        <button type="button" class="a11y-btn" id="tts-btn" aria-pressed="false" title="Đọc bài giảng thành tiếng">
+          🔊 Đọc bài giảng
+        </button>
+      </div>
+      <div class="topbar-right">
+        <div class="a11y-status" id="a11y-live" aria-live="polite"></div>
+
+        <!-- Nút Avatar tròn góc phải kiểu Facebook + Dropdown -->
+        <div class="fb-user-menu" id="fb-user-menu">
+          <button type="button" class="fb-avatar-trigger" id="fb-avatar-trigger" aria-haspopup="true" aria-expanded="false" title="Tài khoản của bạn">
+            <div class="user-avatar fb-avatar-circle" id="user-avatar" aria-hidden="true">U</div>
+            <span class="fb-avatar-caret" aria-hidden="true">⌄</span>
+          </button>
+
+          <div class="fb-dropdown hidden" id="fb-dropdown" role="menu">
+            <!-- Thẻ hồ sơ nổi bên trong -->
+            <div class="fb-profile-card">
+              <div class="fb-profile-row" id="sidebar-user-box" role="menuitem" tabindex="0">
+                <div class="user-avatar fb-drop-avatar" id="fb-drop-avatar" aria-hidden="true">U</div>
+                <div class="fb-profile-meta">
+                  <strong id="user-display-name">Người học</strong>
+                  <span class="muted small" id="user-display-email">email@example.com</span>
+                </div>
+              </div>
+              <button type="button" class="fb-see-profile-btn" id="btn-drop-open-profile">
+                👤 Xem hồ sơ &amp; Nội dung đã học
+              </button>
+            </div>
+
+            <!-- Các mục tài khoản gọn gàng (không trùng lặp menu trái) -->
+            <div class="fb-menu-list">
+              <button type="button" class="fb-menu-item fb-menu-logout" id="btn-logout" role="menuitem">
+                <span class="fb-item-icon" aria-hidden="true">🚪</span>
+                <span class="fb-item-label">Đăng xuất</span>
+              </button>
+            </div>
+
+            <div class="fb-dropdown-footer">
+              EduAdapt ĐGNL • ĐHQG-HCM • Chuẩn WCAG
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Màn hình Đăng nhập / Đăng ký (Bắt buộc trước khi dùng các tính năng) -->
+  <section id="auth-gate" class="auth-gate" aria-labelledby="auth-heading">
+    <div class="auth-card">
+      <div class="auth-header">
+        <span class="brand-icon" aria-hidden="true">🎓</span>
+        <h2 id="auth-heading">Chào mừng đến với EduAdapt ĐGNL</h2>
+        <p class="muted small">Đăng nhập hoặc tạo tài khoản để lưu lộ trình ôn luyện Đánh giá Năng lực ĐHQG-HCM của riêng bạn.</p>
+      </div>
+
+      <!-- Nút đăng nhập / tạo tài khoản bằng Google (OAuth thật) -->
+      <button type="button" class="btn-google" id="btn-google-open">
+        <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        <span>Đăng nhập bằng Google / Gmail</span>
+      </button>
+
+      <div class="auth-divider"><span>hoặc dùng tài khoản tự tạo</span></div>
+
+      <!-- Tabs Đăng nhập / Đăng ký -->
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" id="tab-login" role="tab" aria-selected="true">Đăng nhập</button>
+        <button type="button" class="auth-tab" id="tab-register" role="tab" aria-selected="false">Tạo tài khoản mới</button>
+      </div>
+
+      <div id="auth-error" class="auth-error hidden" role="alert"></div>
+
+      <!-- Form Đăng nhập -->
+      <form id="login-form" class="auth-form" novalidate>
+        <div class="auth-field">
+          <label for="login-email">Email hoặc tên đăng nhập</label>
+          <input type="text" id="login-email" placeholder="nhap@email.com" required />
+        </div>
+        <div class="auth-field">
+          <label for="login-password">Mật khẩu</label>
+          <input type="password" id="login-password" placeholder="Nhập mật khẩu" required />
+        </div>
+        <button type="submit" class="btn btn-primary full-width">Đăng nhập</button>
+      </form>
+
+      <!-- Form Đăng ký -->
+      <form id="register-form" class="auth-form hidden" novalidate>
+        <div class="auth-field">
+          <label for="reg-name">Họ và tên</label>
+          <input type="text" id="reg-name" placeholder="Ví dụ: Trần Văn An" required />
+        </div>
+        <div class="auth-field">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" placeholder="nhap@email.com" required />
+        </div>
+        <div class="auth-field">
+          <label for="reg-password">Mật khẩu (tối thiểu 6 ký tự)</label>
+          <input type="password" id="reg-password" placeholder="Tạo mật khẩu" required />
+        </div>
+        <button type="submit" class="btn btn-primary full-width">Tạo tài khoản &amp; Bắt đầu học</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Khung chính: Thanh Menu Góc Trái + Nội dung chính -->
+  <div class="app-shell hidden" id="app-shell">
+    <!-- THANH MENU GÓC TRÁI GỌN GÀNG -->
+    <aside class="sidebar" id="sidebar" aria-label="Menu điều hướng chính">
+      <div class="sidebar-brand">
+        <span class="brand-icon" aria-hidden="true">🎓</span>
+        <div>
+          <h1 class="brand-title">EduAdapt</h1>
+          <p class="brand-subtitle">ĐGNL ĐHQG-HCM</p>
+        </div>
+      </div>
+
+      <!-- Trình độ hiện tại dạng gọn -->
+      <div class="sidebar-level-compact">
+        <strong id="header-level-badge" class="level-badge level-beginner">Cơ bản (600–750đ)</strong>
+        <button type="button" class="link-btn" id="btn-sidebar-change-level">Đổi trình độ</button>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Danh mục chức năng">
+        <button type="button" class="sidebar-btn active" data-view="generator">
+          <span class="nav-ico" aria-hidden="true">✨</span>
+          <span>Bài giảng</span>
+        </button>
+        <button type="button" class="sidebar-btn" data-view="practice">
+          <span class="nav-ico" aria-hidden="true">📝</span>
+          <span>Luyện tập</span>
+        </button>
+        <button type="button" class="sidebar-btn" data-view="diagnostic">
+          <span class="nav-ico" aria-hidden="true">🧭</span>
+          <span>Đánh giá</span>
+        </button>
+        <button type="button" class="sidebar-btn" data-view="sources">
+          <span class="nav-ico" aria-hidden="true">🛡️</span>
+          <span>Nguồn uy tín</span>
+        </button>
+        <button type="button" class="sidebar-btn sidebar-admin-btn hidden" id="nav-admin-btn" data-view="admin">
+          <span class="nav-ico" aria-hidden="true">⚙️</span>
+          <span>Quản trị</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main id="main-content" class="main-content">
+      <!-- =====================================================
+           VIEW 1: TẠO BÀI GIẢNG
+           ===================================================== -->
+      <section id="view-generator" class="view-section active" aria-labelledby="gen-heading">
+        <div class="hero-card">
+          <div>
+            <h2 id="gen-heading">Tạo Bài giảng ĐGNL ĐHQG-HCM theo trình độ của bạn</h2>
+            <p class="muted">
+              Nội dung tổng hợp từ các nguồn uy tín đã kiểm duyệt (Trung tâm Khảo thí ĐHQG-HCM, CT GDPT 2018, Cambridge, Khan Academy) và tự động điều chỉnh độ sâu.
+            </p>
+          </div>
+          <button type="button" class="btn btn-secondary" id="btn-open-diagnostic">
+            🧭 Đánh giá trình độ
+          </button>
+        </div>
+
+        <!-- Bảng điều khiển tạo bài giảng -->
+        <form id="generator-form" class="control-panel" aria-label="Tùy chỉnh bài giảng ĐGNL">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="subject-select">1. Chọn phân môn ĐGNL ĐHQG-HCM</label>
+              <select id="subject-select" name="subject"></select>
+            </div>
+
+            <div class="form-field">
+              <label for="level-select">2. Mức độ hiểu biết</label>
+              <select id="level-select" name="level">
+                <option value="beginner">🌱 Cơ bản (600–750đ)</option>
+                <option value="intermediate">📘 Trung cấp (750–900đ)</option>
+                <option value="advanced">🔬 Nâng cao (900–1100+đ)</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="goal-select">3. Trọng tâm buổi học</label>
+              <select id="goal-select" name="goal">
+                <option value="concept">Nắm vững phương pháp &amp; lý thuyết trọng tâm</option>
+                <option value="practice">Luyện giải bài tập có lời giải chi tiết</option>
+                <option value="exam">Tổng ôn chiến thuật làm bài phòng thi</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <div class="source-filter-info">
+              <span class="verified-dot" aria-hidden="true">✔</span>
+              <span>Chỉ tổng hợp từ nguồn học thuật uy tín đã qua kiểm duyệt.</span>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn-generate">
+              ✨ Tạo Bài giảng
+            </button>
+          </div>
+        </form>
+
+        <!-- Nội dung bài giảng -->
+        <article class="card lecture-card" aria-labelledby="lecture-title">
+          <div class="card-header">
+            <div>
+              <span class="tag" id="lecture-subject-tag">Chủ đề</span>
+              <span class="level-badge" id="lecture-level-tag">Cơ bản</span>
+              <span class="tag tag-goal" id="lecture-goal-tag">Nắm vững lý thuyết</span>
+            </div>
+            <div class="lecture-meta" id="lecture-read-time">⏱️ ~5 phút đọc</div>
+          </div>
+
+          <h2 id="lecture-title" class="lecture-title"></h2>
+          <p id="lecture-summary" class="lecture-lead"></p>
+
+          <div class="objectives-box">
+            <h3>🎯 Mục tiêu sau bài học</h3>
+            <ul id="lecture-objectives"></ul>
+          </div>
+
+          <div id="lecture-body" class="lecture-body"></div>
+
+          <div class="callout-box">
+            <h3>💡 Ví dụ minh họa thực tế</h3>
+            <p id="lecture-example"></p>
+          </div>
+
+          <div class="takeaway-box">
+            <h3>📌 Tóm tắt cốt lõi</h3>
+            <p id="lecture-takeaway"></p>
+          </div>
+
+          <div class="sources-cited">
+            <h3>🛡️ Nguồn uy tín đã kiểm duyệt cho bài giảng này</h3>
+            <div id="lecture-sources-list" class="source-chips"></div>
+          </div>
+
+          <div class="lecture-next-cta">
+            <button type="button" class="btn btn-secondary" id="btn-mark-studied">
+              ✅ Đánh dấu đã học xong bài này
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-go-practice">
+              📝 Chuyển sang Luyện tập ngay →
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <!-- =====================================================
+           VIEW 2: LUYỆN TẬP & LỜI GIẢI CHI TIẾT
+           ===================================================== -->
+      <section id="view-practice" class="view-section hidden" aria-labelledby="practice-heading">
+        <div class="hero-card">
+          <div>
+            <h2 id="practice-heading">📝 Luyện tập Tổng hợp &amp; Lời giải chi tiết</h2>
+            <p class="muted">
+              Mỗi bài tập đều có lời giải từng bước, mẹo tránh bẫy phòng thi và hệ thống tự động gợi ý nâng/hạ trình độ sau khi nộp bài.
+            </p>
+          </div>
+          <span class="score-pill" id="quiz-progress">0 / 3 câu</span>
+        </div>
+
+        <div class="control-panel">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="practice-subject-select">Chọn phân môn luyện tập</label>
+              <select id="practice-subject-select"></select>
+            </div>
+            <div class="form-field">
+              <label for="practice-level-select">Chọn mức độ câu hỏi</label>
+              <select id="practice-level-select">
+                <option value="beginner">🌱 Cơ bản (600–750đ)</option>
+                <option value="intermediate">📘 Trung cấp (750–900đ)</option>
+                <option value="advanced">🔬 Nâng cao (900–1100+đ)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div id="quiz-container" class="quiz-list"></div>
+
+          <div class="quiz-actions">
+            <button type="button" class="btn btn-primary" id="btn-submit-quiz">
+              ✅ Chấm điểm &amp; Nhận gợi ý thích ứng
+            </button>
+            <button type="button" class="btn btn-secondary hidden" id="btn-retry-quiz">
+              🔄 Làm lại bài tập
+            </button>
+          </div>
+
+          <div id="adaptive-feedback" class="adaptive-feedback hidden" role="status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VIEW 3: ĐÁNH GIÁ TRÌNH ĐỘ (TỰ CHỌN HOẶC TEST 20 CÂU)
+           ===================================================== -->
+      <section id="view-diagnostic" class="view-section hidden" aria-labelledby="diag-heading">
+        <div class="hero-card">
+          <div>
+            <h2 id="diag-heading">🧭 Đánh giá Trình độ Hiểu biết</h2>
+            <p class="muted">
+              Bạn có thể <strong>tự chọn trình độ</strong> nếu đã biết rõ năng lực của mình, hoặc làm <strong>bài kiểm tra 20 câu</strong> (4 phần: Tiếng Việt, Tiếng Anh, Toán, Tư duy Logic) để hệ thống chấm điểm và xác định chính xác cho bạn.
+            </p>
+          </div>
+        </div>
+
+        <!-- Chọn 1 trong 2 phương thức -->
+        <div class="mode-cards" role="tablist" aria-label="Chọn cách xác định trình độ">
+          <button type="button" class="mode-card active" id="mode-btn-self" role="tab" aria-selected="true">
+            <span class="mode-icon" aria-hidden="true">🎯</span>
+            <div>
+              <strong>Cách 1: Tự chọn trình độ</strong>
+              <p>Chọn nhanh mức Cơ bản, Trung cấp hoặc Nâng cao phù hợp với mục tiêu của bạn.</p>
+            </div>
+          </button>
+
+          <button type="button" class="mode-card" id="mode-btn-test" role="tab" aria-selected="false">
+            <span class="mode-icon" aria-hidden="true">📋</span>
+            <div>
+              <strong>Cách 2: Giúp tôi đánh giá (20 câu)</strong>
+              <p>Làm bài test 4 phần (Tiếng Việt, Tiếng Anh, Toán, Tư duy Logic — mỗi phần 5 câu) để đo chính xác.</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- PANEL A: TỰ CHỌN TRÌNH ĐỘ -->
+        <div id="panel-self-select" class="card">
+          <h3>Chọn mức độ hiểu biết hiện tại của bạn</h3>
+          <p class="muted small" style="margin-bottom:16px;">Hệ thống sẽ cập nhật ngay bài giảng và bài tập theo mức bạn chọn.</p>
+
+          <div class="level-cards" role="radiogroup" aria-label="Tự chọn trình độ">
+            <button type="button" class="level-card active" data-level-card="beginner" role="radio" aria-checked="true">
+              <div class="level-card-top">
+                <span class="level-card-icon" aria-hidden="true">🌱</span>
+                <span class="level-badge level-beginner">600–750đ</span>
+              </div>
+              <strong>Cơ bản</strong>
+              <p>Mới bắt đầu ôn ĐGNL, cần nắm chắc kiến thức nền và lời giải chi tiết từng bước.</p>
+            </button>
+
+            <button type="button" class="level-card" data-level-card="intermediate" role="radio" aria-checked="false">
+              <div class="level-card-top">
+                <span class="level-card-icon" aria-hidden="true">📘</span>
+                <span class="level-badge level-intermediate">750–900đ</span>
+              </div>
+              <strong>Trung cấp</strong>
+              <p>Đã có nền tảng, tập trung luyện chuẩn cấu trúc đề và nâng tốc độ xử lý.</p>
+            </button>
+
+            <button type="button" class="level-card" data-level-card="advanced" role="radio" aria-checked="false">
+              <div class="level-card-top">
+                <span class="level-card-icon" aria-hidden="true">🔬</span>
+                <span class="level-badge level-advanced">900–1100+đ</span>
+              </div>
+              <strong>Nâng cao</strong>
+              <p>Mục tiêu điểm cao, chinh phục câu phân loại vận dụng cao &amp; chiến thuật chống bẫy.</p>
+            </button>
+          </div>
+
+          <div id="self-select-confirm" class="adaptive-feedback" style="margin-top:20px;">
+            <h3>✅ Trình độ đang áp dụng: <span id="self-selected-label">Cơ bản (600–750đ)</span></h3>
+            <p>Toàn bộ bài giảng và bài tập đã được đồng bộ theo trình độ này.</p>
+            <button type="button" class="btn btn-primary" id="btn-self-go-study">Vào học ngay →</button>
+          </div>
+        </div>
+
+        <!-- PANEL B: BÀI KIỂM TRA 20 CÂU (4 PHẦN x 5 CÂU) -->
+        <div id="panel-guided-test" class="card hidden">
+          <div class="card-header">
+            <div>
+              <h3 style="margin:0;">📋 Bài kiểm tra Đánh giá Trình độ (20 câu)</h3>
+              <p class="muted small">Gồm 4 phần: Tiếng Việt (5), Tiếng Anh (5), Toán học (5), Tư duy Logic (5).</p>
+            </div>
+            <span class="score-pill" id="diag-progress">Đã làm: 0 / 20 câu</span>
+          </div>
+
+          <!-- Kết quả & Trình độ hiện nổi bật sau khi nộp -->
+          <div id="diag-result" class="result-hero hidden" role="status" aria-live="polite"></div>
+
+          <form id="diagnostic-form" class="diag-sections-wrap"></form>
+
+          <div class="diag-actions">
+            <button type="button" class="btn btn-primary" id="btn-submit-diag">
+              🎯 Nộp bài &amp; Xem trình độ của tôi
+            </button>
+            <button type="button" class="btn btn-secondary hidden" id="btn-retry-diag">
+              🔄 Làm lại bài kiểm tra 20 câu
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VIEW 4: KHO NGUỒN UY TÍN ĐƯỢC KIỂM DUYỆT
+           ===================================================== -->
+      <section id="view-sources" class="view-section hidden" aria-labelledby="sources-heading">
+        <div class="card">
+          <h2 id="sources-heading">🛡️ Danh mục Nguồn Học thuật Uy tín được Kiểm duyệt</h2>
+          <p class="muted">
+            Mọi bài giảng và câu hỏi trên EduAdapt ĐGNL đều được biên soạn và đối chiếu từ các tổ chức giáo dục, viện nghiên cứu và tài liệu chuẩn quốc tế dưới đây.
+          </p>
+          <div id="all-sources-grid" class="sources-grid"></div>
+        </div>
+      </section>
+
+      <!-- =====================================================
+           VIEW 5: HỒ SƠ NGƯỜI HỌC (AVATAR, TÊN, GMAIL, NỘI DUNG ĐÃ HỌC)
+           ===================================================== -->
+      <section id="view-profile" class="view-section hidden" aria-labelledby="profile-heading">
+        <!-- Thẻ thông tin cá nhân -->
+        <div class="card profile-hero">
+          <div class="profile-identity">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar-lg" id="profile-avatar-lg" aria-hidden="true">U</div>
+              <label class="avatar-upload-btn" for="avatar-file-input" title="Đổi ảnh đại diện">
+                📷 Đổi ảnh
+              </label>
+              <input type="file" id="avatar-file-input" accept="image/*" class="hidden" />
+            </div>
+
+            <div class="profile-info">
+              <div class="profile-name-row">
+                <h2 id="profile-heading">Người học</h2>
+                <span class="verified-badge" id="profile-provider-badge">✔ Tài khoản</span>
+              </div>
+              <p class="muted" id="profile-email-text">email@gmail.com</p>
+              <div class="profile-badges-row">
+                <span class="level-badge level-beginner" id="profile-level-badge">Cơ bản (600–750đ)</span>
+                <span class="tag tag-goal" id="profile-target-badge">🎯 Mục tiêu: 900đ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-edit-box">
+            <div class="profile-edit-grid">
+              <div class="auth-field">
+                <label for="profile-edit-name">Tên hiển thị</label>
+                <input type="text" id="profile-edit-name" placeholder="Nhập tên của bạn" />
+              </div>
+              <div class="auth-field">
+                <label for="profile-edit-target">Mục tiêu điểm ĐGNL</label>
+                <select id="profile-edit-target" class="profile-select">
+                  <option value="750">750+ điểm (An toàn)</option>
+                  <option value="850">850+ điểm (Khá giỏi)</option>
+                  <option value="950">950+ điểm (Top đầu)</option>
+                  <option value="1050">1050+ điểm (Xuất sắc)</option>
+                </select>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-save-profile">💾 Lưu thông tin hồ sơ</button>
+          </div>
+        </div>
+
+        <!-- 4 Thẻ thống kê nhanh -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-label">📚 Bài giảng đã học</span>
+            <strong class="stat-value" id="stat-lessons-count">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">📝 Bài tập đã hoàn thành</span>
+            <strong class="stat-value" id="stat-quizzes-count">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">🎯 Điểm TB luyện tập</span>
+            <strong class="stat-value" id="stat-avg-score">--%</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">🧭 Đánh giá 20 câu gần nhất</span>
+            <strong class="stat-value" id="stat-diag-score">Chưa làm</strong>
+          </div>
+        </div>
+
+        <!-- Tiến độ theo 4 phân môn -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3 style="margin:0 0 14px 0;">📊 Tiến độ ôn luyện theo 4 phân môn ĐGNL</h3>
+          <div id="profile-subject-progress" class="subject-progress-list"></div>
+        </div>
+
+        <!-- Danh sách nội dung đã học & lịch sử bài tập -->
+        <div class="profile-history-grid">
+          <div class="card">
+            <h3 style="margin:0 0 12px 0;">📖 Nội dung bài giảng đã học</h3>
+            <div id="profile-studied-list" class="history-list"></div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin:0 0 12px 0;">🏆 Lịch sử luyện tập gần đây</h3>
+            <div id="profile-quiz-history" class="history-list"></div>
+          </div>
+        </div>
+      </section>
+      <!-- =====================================================
+           VIEW 6: TRANG QUẢN TRỊ (CHỈ DÀNH CHO ADMIN)
+           ===================================================== -->
+      <section id="view-admin" class="view-section hidden" aria-labelledby="admin-heading">
+        <div class="hero-card">
+          <div>
+            <h2 id="admin-heading">⚙️ Bảng điều khiển Quản trị viên (Admin)</h2>
+            <p class="muted">
+              Phân quyền cộng tác viên chỉnh sửa web, cập nhật nội dung bài giảng và bổ sung câu hỏi bài tập có lời giải chi tiết.
+            </p>
+          </div>
+          <span class="level-badge level-advanced">👑 Quyền Admin</span>
+        </div>
+
+        <!-- 1. Quản lý Phân quyền Admin -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3 style="margin:0 0 8px 0;">👥 Quản lý Phân quyền (Admin / Người học)</h3>
+          <p class="muted small" style="margin-bottom:14px;">
+            Thêm địa chỉ Gmail / Email của người khác để cấp quyền Admin cho phép họ chỉnh sửa bài giảng và thêm bài tập.
+          </p>
+          <form id="admin-add-role-form" class="admin-inline-form">
+            <input type="email" id="admin-new-email" placeholder="Nhập Email / Gmail cần cấp quyền Admin..." required />
+            <button type="submit" class="btn btn-primary">➕ Cấp quyền Admin</button>
+          </form>
+          <div id="admin-role-list" class="history-list" style="margin-top:14px;"></div>
+        </div>
+
+        <!-- 2. Chỉnh sửa Nội dung Bài giảng -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3 style="margin:0 0 8px 0;">✏️ Chỉnh sửa Nội dung Bài giảng</h3>
+          <p class="muted small" style="margin-bottom:14px;">
+            Chọn phân môn và trình độ muốn sửa, chỉnh nội dung rồi bấm Lưu để cập nhật ngay cho người học.
+          </p>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="admin-edit-subject">Phân môn</label>
+              <select id="admin-edit-subject"></select>
+            </div>
+            <div class="form-field">
+              <label for="admin-edit-level">Trình độ</label>
+              <select id="admin-edit-level">
+                <option value="beginner">🌱 Cơ bản (600–750đ)</option>
+                <option value="intermediate">📘 Trung cấp (750–900đ)</option>
+                <option value="advanced">🔬 Nâng cao (900–1100+đ)</option>
+              </select>
+            </div>
+          </div>
+
+          <form id="admin-edit-lesson-form" class="auth-form">
+            <div class="auth-field">
+              <label for="admin-lesson-title">Tiêu đề bài giảng</label>
+              <input type="text" id="admin-lesson-title" required />
+            </div>
+            <div class="auth-field">
+              <label for="admin-lesson-summary">Tóm tắt mở đầu</label>
+              <textarea id="admin-lesson-summary" rows="2" class="admin-textarea" required></textarea>
+            </div>
+            <div class="auth-field">
+              <label for="admin-lesson-example">Ví dụ minh họa thực tế</label>
+              <textarea id="admin-lesson-example" rows="2" class="admin-textarea" required></textarea>
+            </div>
+            <div class="auth-field">
+              <label for="admin-lesson-takeaway">Tóm tắt cốt lõi</label>
+              <textarea id="admin-lesson-takeaway" rows="2" class="admin-textarea" required></textarea>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button type="submit" class="btn btn-primary">💾 Lưu thay đổi bài giảng</button>
+              <button type="button" class="btn btn-secondary" id="btn-admin-reset-lesson">↩️ Khôi phục mặc định</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- 3. Thêm Câu hỏi Bài tập mới -->
+        <div class="card">
+          <h3 style="margin:0 0 8px 0;">➕ Thêm Câu hỏi Bài tập mới (Có lời giải)</h3>
+          <p class="muted small" style="margin-bottom:14px;">
+            Câu hỏi mới sẽ được thêm thẳng vào phân môn &amp; trình độ đang chọn phía trên.
+          </p>
+          <form id="admin-add-quiz-form" class="auth-form">
+            <div class="auth-field">
+              <label for="admin-q-text">Nội dung câu hỏi</label>
+              <textarea id="admin-q-text" rows="2" class="admin-textarea" placeholder="Nhập đề câu hỏi..." required></textarea>
+            </div>
+            <div class="form-grid">
+              <div class="auth-field">
+                <label for="admin-q-opt0">Đáp án A</label>
+                <input type="text" id="admin-q-opt0" required />
+              </div>
+              <div class="auth-field">
+                <label for="admin-q-opt1">Đáp án B</label>
+                <input type="text" id="admin-q-opt1" required />
+              </div>
+              <div class="auth-field">
+                <label for="admin-q-opt2">Đáp án C</label>
+                <input type="text" id="admin-q-opt2" required />
+              </div>
+              <div class="auth-field">
+                <label for="admin-q-opt3">Đáp án D</label>
+                <input type="text" id="admin-q-opt3" required />
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="auth-field">
+                <label for="admin-q-answer">Đáp án đúng</label>
+                <select id="admin-q-answer" class="profile-select">
+                  <option value="0">Đáp án A</option>
+                  <option value="1">Đáp án B</option>
+                  <option value="2">Đáp án C</option>
+                  <option value="3">Đáp án D</option>
+                </select>
+              </div>
+              <div class="auth-field">
+                <label for="admin-q-tip">Mẹo làm bài nhanh ĐGNL</label>
+                <input type="text" id="admin-q-tip" placeholder="Ví dụ: Chú ý từ khóa..." required />
+              </div>
+            </div>
+            <div class="auth-field">
+              <label for="admin-q-steps">Lời giải chi tiết (mỗi bước 1 dòng)</label>
+              <textarea id="admin-q-steps" rows="3" class="admin-textarea" placeholder="Bước 1: ...&#10;Bước 2: ..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">➕ Thêm câu hỏi vào kho đề</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="data.js?v=13"></script>
+  <script src="app.js?v=13"></script>
+</body>
+</html>
