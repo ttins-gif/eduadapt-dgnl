@@ -73,6 +73,15 @@
   const btnAdminResetLesson = document.getElementById("btn-admin-reset-lesson");
   const adminAddQuizForm = document.getElementById("admin-add-quiz-form");
 
+  // Onboarding DOM
+  const onboardingModal = document.getElementById("onboarding-modal");
+  const onbStepAsk = document.getElementById("onb-step-ask");
+  const onbStepGuide = document.getElementById("onb-step-guide");
+  const btnOnbKnow = document.getElementById("btn-onb-know");
+  const btnOnbNew = document.getElementById("btn-onb-new");
+  const btnOnbGoDiag = document.getElementById("btn-onb-go-diag");
+  const btnOnbStart = document.getElementById("btn-onb-start");
+
   // Profile DOM
   const sidebarUserBox = document.getElementById("sidebar-user-box");
   const fbUserMenu = document.getElementById("fb-user-menu");
@@ -910,6 +919,7 @@
     updateAdminVisibility();
     renderLesson();
     renderProfile();
+    maybeShowOnboarding();
     announce(`Xin chào ${user.name}! Bạn đã đăng nhập thành công.`);
   }
 
@@ -1477,6 +1487,55 @@
       renderLesson();
       adminAddQuizForm.reset();
       announce("Đã thêm câu hỏi mới vào kho đề luyện tập!");
+    });
+  }
+
+  // ---------------------------------------------------------
+  // Onboarding for New Users (Đã biết / Chưa biết ĐGNL)
+  // ---------------------------------------------------------
+  function maybeShowOnboarding() {
+    if (!currentUser || !onboardingModal) return;
+    const prog = loadProgress();
+    if (!prog.onboardingDone) {
+      onbStepAsk.classList.remove("hidden");
+      onbStepGuide.classList.add("hidden");
+      onboardingModal.classList.remove("hidden");
+    }
+  }
+
+  function finishOnboarding() {
+    const prog = loadProgress();
+    prog.onboardingDone = true;
+    saveProgress(prog);
+    if (onboardingModal) onboardingModal.classList.add("hidden");
+  }
+
+  if (btnOnbKnow) {
+    btnOnbKnow.addEventListener("click", () => {
+      finishOnboarding();
+      announce("Chào mừng bạn bắt đầu ôn luyện!");
+    });
+  }
+
+  if (btnOnbNew) {
+    btnOnbNew.addEventListener("click", () => {
+      onbStepAsk.classList.add("hidden");
+      onbStepGuide.classList.remove("hidden");
+    });
+  }
+
+  if (btnOnbStart) {
+    btnOnbStart.addEventListener("click", () => {
+      finishOnboarding();
+      switchView("generator");
+    });
+  }
+
+  if (btnOnbGoDiag) {
+    btnOnbGoDiag.addEventListener("click", () => {
+      finishOnboarding();
+      switchView("diagnostic");
+      setDiagnosticMode("test");
     });
   }
 
