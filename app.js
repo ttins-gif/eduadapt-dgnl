@@ -1751,7 +1751,7 @@
         gradeMockExam(true);
       }
     }, 1000);
-    announce("Đã bắt đầu bài thi thử ĐGNL 2026 (50 phút).");
+    announce(`Đã bắt đầu bài thi thử ĐGNL (${MOCK_EXAM_2026.durationMinutes} phút — ${MOCK_EXAM_2026.totalQuestions} câu).`);
   }
 
   function gradeMockExam(autoSubmitted = false) {
@@ -1780,7 +1780,7 @@
         }
       });
       breakdown.push({
-        title: sec.name.replace(" (10 câu)", ""),
+        title: sec.name.replace(/\s*\(\d+\s*câu\)/, ""),
         score: secCorrect,
         total: sec.questions.length
       });
@@ -1790,12 +1790,12 @@
     const estScore1200 = Math.round((totalCorrect / total) * 1200);
     const percent = Math.round((totalCorrect / total) * 100);
 
-    recordQuizResult("mock-2026", "Thi thử ĐGNL 2026", state.level, totalCorrect, total, percent);
+    recordQuizResult("mock-vact", "Thi thử ĐGNL", state.level, totalCorrect, total, percent);
 
     mockResultBox.innerHTML = `
       <div class="result-hero-top">
         <div>
-          <span class="muted small">${autoSubmitted ? "HẾT GIỜ — TỰ ĐỘNG NỘP BÀI" : "KẾT QUẢ THI THỬ ĐGNL ĐHQG-HCM 2026"}</span>
+          <span class="muted small">${autoSubmitted ? "HẾT GIỜ — TỰ ĐỘNG NỘP BÀI" : "KẾT QUẢ THI THỬ ĐGNL ĐHQG-HCM"}</span>
           <div class="result-level-big">Điểm quy đổi ước lượng: <span class="level-badge level-intermediate" style="font-size:1.1rem; padding:6px 14px;">${estScore1200} / 1.200 điểm</span></div>
         </div>
         <div class="score-pill" style="font-size:1rem; padding:8px 14px;">Đúng: ${totalCorrect} / ${total} câu (${percent}%)</div>
@@ -1812,7 +1812,7 @@
           )
           .join("")}
       </div>
-      <p class="muted small" style="margin:0;">Kéo xuống dưới để xem đáp án đúng và lời giải chi tiết cho toàn bộ 40 câu.</p>
+      <p class="muted small" style="margin:0;">Kéo xuống dưới để xem đáp án đúng và lời giải chi tiết cho toàn bộ ${total} câu.</p>
     `;
     mockResultBox.classList.remove("hidden");
     btnSubmitMock.classList.add("hidden");
