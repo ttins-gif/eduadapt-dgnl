@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EduAdapt ĐGNL — Ôn luyện Đánh giá Năng lực ĐHQG-HCM</title>
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css?v=15" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Chuyển đến nội dung chính</a>
@@ -645,7 +645,64 @@
     </main>
   </div>
 
-  <script src="data.js?v=13"></script>
-  <script src="app.js?v=13"></script>
+  <!-- Hộp thoại Onboarding cho người mới đăng nhập -->
+  <div id="onboarding-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="onb-title">
+    <div class="modal-card">
+      <!-- Bước 1: Hỏi đã biết hay chưa biết về ĐGNL -->
+      <div id="onb-step-ask">
+        <h2 id="onb-title" style="margin:0 0 8px 0;">Bạn đã biết về kỳ thi ĐGNL ĐHQG-HCM chưa?</h2>
+        <p class="muted" style="margin-bottom:20px;">
+          Chọn lựa chọn phù hợp để EduAdapt chuẩn bị trải nghiệm tốt nhất cho bạn.
+        </p>
+        <div class="onb-choice-grid">
+          <button type="button" class="mode-card" id="btn-onb-know">
+            <div>
+              <strong>Tôi đã biết</strong>
+              <p>Bỏ qua phần giới thiệu và vào học ngay.</p>
+            </div>
+          </button>
+          <button type="button" class="mode-card" id="btn-onb-new">
+            <div>
+              <strong>Tôi chưa biết</strong>
+              <p>Xem nhanh những điều cần thiết về cấu trúc và cách tính điểm ĐGNL.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bước 2: Những điều đáng chú ý / cần thiết trong ĐGNL -->
+      <div id="onb-step-guide" class="hidden">
+        <h2 style="margin:0 0 6px 0;">Những điều cần biết về ĐGNL ĐHQG-HCM</h2>
+        <p class="muted small" style="margin-bottom:16px;">Tóm tắt nhanh cấu trúc chính thức của Trung tâm Khảo thí ĐHQG-HCM.</p>
+
+        <div class="onb-guide-list">
+          <div class="onb-guide-item">
+            <strong>1. Quy mô &amp; Thời gian</strong>
+            <p>Gồm <strong>120 câu trắc nghiệm</strong> làm trong <strong>150 phút</strong> (trung bình ~1,25 phút/câu), tổng điểm tối đa <strong>1.200 điểm</strong>.</p>
+          </div>
+          <div class="onb-guide-item">
+            <strong>2. Cấu trúc 3 phần thi</strong>
+            <p><strong>Sử dụng ngôn ngữ</strong> (30 câu Tiếng Việt + 30 câu Tiếng Anh), <strong>Toán học</strong> (30 câu), và <strong>Tư duy khoa học</strong> (30 câu Logic, Phân tích số liệu &amp; Suy luận).</p>
+          </div>
+          <div class="onb-guide-item">
+            <strong>3. Cách tính điểm (IRT)</strong>
+            <p>Mỗi câu có trọng số điểm khác nhau tùy độ khó — làm đúng câu khó được cộng nhiều điểm hơn. <strong>Không trừ điểm câu sai</strong>, nên tuyệt đối không bỏ trống đáp án.</p>
+          </div>
+          <div class="onb-guide-item">
+            <strong>4. Lưu ý ôn luyện hiệu quả</strong>
+            <p>Đề thi ưu tiên khả năng <strong>đọc hiểu dữ kiện, suy luận và quản lý thời gian</strong> hơn là học thuộc lòng. Bạn có thể thi nhiều đợt và dùng điểm cao nhất để xét tuyển.</p>
+          </div>
+        </div>
+
+        <div class="onb-actions">
+          <button type="button" class="btn btn-primary" id="btn-onb-go-diag">Đánh giá trình độ ngay</button>
+          <button type="button" class="btn btn-secondary" id="btn-onb-start">Vào xem bài giảng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js?v=15"></script>
+  <script src="app.js?v=15"></script>
 </body>
 </html>
