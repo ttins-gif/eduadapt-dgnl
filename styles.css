@@ -2098,3 +2098,76 @@ html[data-theme="contrast"] .btn-primary {
   gap: 10px;
   justify-content: flex-end;
 }
+
+/* =========================================================
+   Mock Exam Room & In-Depth Lecture Callouts
+   ========================================================= */
+
+.mock-sticky-bar {
+  position: sticky;
+  top: 52px;
+  z-index: 40;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+
+.mock-timer-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.94rem;
+}
+
+.mock-timer {
+  font-size: 1.2rem;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.mock-status-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mock-passage {
+  padding: 12px 14px;
+  border-left: 4px solid var(--primary);
+  background: var(--surface);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.lecture-depth-box {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+}
+
+.lecture-depth-box h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.02rem;
+  color: var(--primary);
+}
+
+.lecture-depth-box ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.lecture-depth-box li {
+  margin-bottom: 6px;
+}
