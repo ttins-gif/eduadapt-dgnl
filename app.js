@@ -422,6 +422,8 @@
     if (adminEditSubject) adminEditSubject.innerHTML = optionsHtml;
   }
 
+  const theoryTabs = document.querySelectorAll("[data-theory-subj]");
+
   function syncLevelUI() {
     const meta = LEVEL_META[state.level];
     headerLevelBadge.textContent = meta.label;
@@ -434,12 +436,161 @@
     practiceSubjectSelect.value = state.subjectId;
     goalSelect.value = state.goal;
 
+    theoryTabs.forEach((tab) => {
+      const isActive = tab.dataset.theorySubj === state.subjectId;
+      tab.classList.toggle("active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+
     levelCards.forEach((card) => {
       const isSelected = card.dataset.levelCard === state.level;
       card.classList.toggle("active", isSelected);
       card.setAttribute("aria-checked", String(isSelected));
     });
   }
+
+  theoryTabs.forEach((tab) => {
+    tab.addEventListener("click", () => {
+      state.subjectId = tab.dataset.theorySubj;
+      saveState();
+      renderLesson();
+      announce(`Đã chuyển sang lý thuyết: ${tab.textContent.trim()}`);
+    });
+  });
+
+  // ---------------------------------------------------------
+  // Comprehensive V-ACT Theory Modules (4 Parts)
+  // ---------------------------------------------------------
+  const DETAILED_THEORY_MODULES = {
+    "lang-vi": `
+      <div class="theory-chapter">
+        <h4>Chương 1: Ngữ âm, Chính tả, Từ loại và Nghĩa của từ</h4>
+        <ul>
+          <li><strong>Chính tả &amp; Chuẩn từ:</strong> Phân biệt phụ âm đầu dễ lẫn (s/x, tr/ch, r/d/gi, l/n), vần (iêu/yêu, ươu/ưu, an/ang, at/ac) và dấu hỏi/ngã (quy tắc láy âm: huyền–ngã–nặng đi với nhau; ngang–hỏi–sắc đi với nhau, ví dụ: <em>mỡ màng, vội vã, lạnh lẽo</em> vs <em>ngớ ngẩn, mảnh mai, trắng trẻo</em>).</li>
+          <li><strong>Từ loại:</strong> Thực từ (Danh từ, Động từ, Tính từ, Số từ, Đại từ) và Hư từ (Phó từ, Quan hệ từ, Trợ từ, Tình thái từ, Thán từ). Nắm vững từ ghép đẳng lập (<em>quần áo, vui buồn</em>), từ ghép chính phụ (<em>xe đạp, xanh ngắt</em>) và từ láy (toàn bộ, bộ phận).</li>
+          <li><strong>Nghĩa của từ &amp; Từ Hán Việt:</strong> Phân biệt từ đồng âm (<em>đường đi / đường ăn</em>), từ đa nghĩa (nghĩa gốc và nghĩa chuyển theo ẩn dụ/hoán dụ), từ đồng nghĩa hoàn toàn/không hoàn toàn và lỗi dùng từ Hán Việt sai nghĩa (ví dụ: <em>yếu điểm</em> là điểm quan trọng, không phải điểm yếu; <em>cứu cánh</em> là mục đích cuối cùng, không phải cứu giúp; <em>tri thức</em> là kiến thức, <em>trí thức</em> là tầng lớp lao động trí óc).</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 2: Ngữ pháp câu, Lỗi câu và Liên kết văn bản</h4>
+        <ul>
+          <li><strong>Thành phần câu:</strong> Thành phần chính (Chủ ngữ, Vị ngữ) và thành phần phụ (Trạng ngữ, Khởi ngữ, Thành phần biệt lập: tình thái, cảm thán, gọi-đáp, phụ chú).</li>
+          <li><strong>Các lỗi câu thường gặp trong ĐGNL:</strong> Thiếu chủ ngữ (do biến chủ ngữ thành trạng ngữ: <em>"Qua tác phẩm đã cho thấy..."</em>), thiếu vị ngữ, sai logic (<em>"Anh ấy là một trong những nhà thơ viết nhiều nhất, nhưng chỉ có một bài"</em>), dùng sai quan hệ từ (<em>"Tuy... nhưng..."</em> phải đi cặp, tránh <em>"Vì... nên..."</em> thiếu vế), câu mơ hồ do cấu trúc.</li>
+          <li><strong>Phép liên kết đoạn văn:</strong> Phép lặp, phép thế (đại từ, từ đồng nghĩa), phép nối (quan hệ từ, từ ngữ chuyển tiếp), phép liên tưởng và phép nghịch đối.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 3: Phong cách ngôn ngữ, Phương thức biểu đạt và Biện pháp tu từ</h4>
+        <ul>
+          <li><strong>6 Phương thức biểu đạt:</strong> Tự sự (kể chuyện, có cốt truyện/nhân vật), Miêu tả (tái hiện đặc điểm), Biểu cảm (bộc lộ cảm xúc), Thuyết minh (cung cấp tri thức khách quan), Nghị luận (trình bày quan điểm, lập luận), Hành chính – công vụ.</li>
+          <li><strong>6 Phong cách ngôn ngữ:</strong> Sinh hoạt, Nghệ thuật, Báo chí, Chính luận, Khoa học, Hành chính.</li>
+          <li><strong>Biện pháp tu từ trọng tâm:</strong> So sánh, Ẩn dụ (dựa trên nét tương đồng), Hoán dụ (dựa trên quan hệ gần gũi: bộ phận–toàn thể, vật chứa–vật bị chứa), Nhân hóa, Điệp ngữ, Liệt kê, Nói quá (thậm xưng), Nói giảm nói tránh, Tương phản/Đối lập, Chơi chữ, Câu hỏi tu từ.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 4: Văn học Việt Nam và Kỹ năng Đọc hiểu V-ACT</h4>
+        <ul>
+          <li><strong>Thể thơ &amp; Luật thơ:</strong> Lục bát (vần chữ 6 câu lục với chữ 6 câu bát), Song thất lục bát, Thơ Đường luật thất ngôn bát cú (niêm, luật bằng trắc, vần chân ở câu 1-2-4-6-8, đối ở câu 3-4 và 5-6), Thơ tự do.</li>
+          <li><strong>Tiến trình văn học:</strong> Văn học dân gian (thần thoại, sử thi, truyền thuyết, cổ tích, ca dao, tục ngữ) &rarr; Văn học trung đại (thế kỷ X–XIX: cảm hứng yêu nước, nhân đạo, thiên nhiên) &rarr; Văn học hiện đại (Thơ mới 1932–1945, văn học hiện thực phê phán, văn học kháng chiến 1945–1975, văn học sau 1975).</li>
+          <li><strong>Chiến thuật đọc hiểu ngữ liệu dài:</strong> Đọc câu hỏi trước để khoanh vùng từ khóa, xác định câu chủ đề (thường ở đầu hoặc cuối đoạn), phân biệt thông tin <em>nêu trực tiếp</em> và <em>suy luận hợp lý</em>, tuyệt đối không suy diễn vượt ngoài ngữ liệu.</li>
+        </ul>
+      </div>
+    `,
+    "lang-en": `
+      <div class="theory-chapter">
+        <h4>Chương 1: Hệ thống Thì (Tenses), Sự hòa hợp Chủ-Vị và Câu bị động</h4>
+        <ul>
+          <li><strong>12 Thì cốt lõi &amp; Dấu hiệu:</strong> Hiện tại đơn (thói quen, chân lý), Hiện tại hoàn thành (<em>since, for, already, yet, so far, recently</em>), Quá khứ đơn (mốc thời gian xác định: <em>ago, yesterday, in 2020</em>), Quá khứ hoàn thành (hành động xảy ra trước một hành động khác trong quá khứ: <em>By the time + S + V2, S + had + V3</em>), Tương lai hoàn thành (<em>By + mốc tương lai, S + will have + V3</em>).</li>
+          <li><strong>Sự hòa hợp Chủ-Vị (Subject–Verb Agreement):</strong> <em>The number of + N(s) + V(ít)</em> nhưng <em>A number of + N(s) + V(nhiều)</em>; <em>Neither A nor B / Either A or B / Not only A but also B</em> chia theo chủ ngữ B; <em>A along with / as well as / together with B</em> chia theo chủ ngữ A; Đại từ bất định (<em>everyone, each, neither</em>) luôn đi với V số ít.</li>
+          <li><strong>Câu bị động đặc biệt:</strong> Bị động khách quan (<em>It is said that... / S is said to V / to have V3</em>), bị động nhờ vả (<em>have sth done / get sth done</em>).</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 2: Mệnh đề quan hệ, Câu điều kiện, Đảo ngữ và Câu gián tiếp</h4>
+        <ul>
+          <li><strong>Mệnh đề quan hệ:</strong> <em>who, whom, which, whose, where, when, why</em>; không dùng <em>that</em> sau dấu phẩy hoặc sau giới từ. Rút gọn mệnh đề quan hệ: chủ động dùng <code>V-ing</code>, bị động dùng <code>V3/ed</code>, sau số thứ tự/so sánh nhất dùng <code>to V</code>.</li>
+          <li><strong>Câu điều kiện &amp; Đảo ngữ điều kiện:</strong> Loại 1 (<code>Should + S + V</code>), Loại 2 (<code>Were + S + (to V)</code>), Loại 3 (<code>Had + S + V3</code>), Điều kiện hỗn hợp (Loại 3 + Loại 2: quá khứ ảnh hưởng hiện tại).</li>
+          <li><strong>Đảo ngữ phủ định thường ra thi:</strong> <em>Not only + aux + S + V, but...; Never / Seldom / Rarely / Little + aux + S + V; No sooner + had + S + V3 + than...; Hardly / Scarcely + had + S + V3 + when...; Only after / Only when / Only by + ... + aux + S + V</em>.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 3: Câu phức, Liên từ, So sánh và Viết lại câu (Sentence Transformation)</h4>
+        <ul>
+          <li><strong>Liên từ &amp; Giới từ chỉ nguyên nhân/nhượng bộ:</strong> <em>Because / Although / Even though + S + V</em> khác với <em>Because of / Despite / In spite of + N/V-ing</em>.</li>
+          <li><strong>So sánh kép:</strong> <code>The + so sánh hơn + S1 + V1, the + so sánh hơn + S2 + V2</code> (càng... càng...).</li>
+          <li><strong>Cấu trúc viết lại câu ăn điểm:</strong> <em>It is time + S + V2/ed</em>; <em>would rather + S + V2/ed</em>; <em>suggest + V-ing / that S + (should) + V0</em>; <em>too... to</em> &harr; <em>so... that</em> &harr; <em>such... that</em>.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 4: Chiến thuật Sửa lỗi sai, Điền từ (Cloze Test) và Đọc hiểu (Reading)</h4>
+        <ul>
+          <li><strong>Sửa lỗi sai (5 câu):</strong> Kiểm tra theo thứ tự ưu tiên: (1) Hòa hợp chủ-vị &amp; thì, (2) Cấu trúc song song (<em>and, or, both...and</em>), (3) Từ loại (Adj vs Adv, N vs V), (4) Đại từ quy chiếu, (5) Từ dễ nhầm lẫn (<em>economic/economical, considerable/considerate, historic/historical</em>).</li>
+          <li><strong>Đọc hiểu 2 bài (10 câu):</strong> Với câu <em>Main idea</em>: đọc câu đầu/cuối mỗi đoạn, loại đáp án quá hẹp hoặc quá rộng. Với câu <em>Reference (it, they, which)</em>: đọc ngay câu liền trước. Với câu <em>NOT TRUE / EXCEPT</em>: dò từng phương án đối chiếu từ khóa trong bài.</li>
+        </ul>
+      </div>
+    `,
+    "math": `
+      <div class="theory-chapter">
+        <h4>Chương 1: Hàm số, Đạo hàm, Mũ – Logarit và Tích phân</h4>
+        <ul>
+          <li><strong>Khảo sát hàm số:</strong> Đơn điệu (<code>y' &ge; 0</code> đồng biến, <code>y' &le; 0</code> nghịch biến); Cực trị (<code>y'</code> đổi dấu qua <code>x_0</code>); Tiệm cận đứng (<code>lim f(x) = &plusmn;&infin;</code>), Tiệm cận ngang (<code>lim_{x&rarr;&plusmn;&infin;} f(x) = y_0</code>); GTLN–GTNN trên đoạn <code>[a; b]</code>.</li>
+          <li><strong>Mũ &amp; Logarit:</strong> Với <code>a &gt; 0, a &ne; 1, x, y &gt; 0</code>: <code>log_a(xy) = log_a x + log_a y</code>; <code>log_a(x/y) = log_a x - log_a y</code>; <code>log_{a^k}(x^m) = (m/k) log_a x</code>; đổi cơ số <code>log_a b = log_c b / log_c a</code>. Bài toán lãi kép: <code>A = P(1 + r)^n</code>.</li>
+          <li><strong>Nguyên hàm &amp; Tích phân:</strong> Diện tích hình phẳng <code>S = &int;_a^b |f(x) - g(x)| dx</code>; Thể tích khối tròn xoay quanh Ox: <code>V = &pi; &int;_a^b [f(x)]^2 dx</code>; Ứng dụng quãng đường <code>S = &int; v(t) dt</code>.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 2: Tổ hợp – Xác suất, Thống kê và Quy hoạch tuyến tính</h4>
+        <ul>
+          <li><strong>Đếm &amp; Tổ hợp:</strong> Hoán vị <code>P_n = n!</code>; Chỉnh hợp <code>A_n^k = n!/(n-k)!</code> (có thứ tự); Tổ hợp <code>C_n^k = n!/[k!(n-k)!]</code> (không thứ tự).</li>
+          <li><strong>Xác suất &amp; Xác suất có điều kiện:</strong> <code>P(A &cup; B) = P(A) + P(B) - P(A &cap; B)</code>; Xác suất có điều kiện <code>P(A|B) = P(A &cap; B) / P(B)</code>; Công thức xác suất toàn phần và định lý Bayes (rất hay gặp trong V-ACT mới).</li>
+          <li><strong>Thống kê mẫu số liệu ghép nhóm:</strong> Số trung bình, Trung vị (<code>Q_2</code>), Tứ phân vị (<code>Q_1, Q_3</code>), Khoảng tứ phân vị <code>&Delta;_Q = Q_3 - Q_1</code>, Phương sai <code>s^2</code> và Độ lệch chuẩn <code>s = &radic;(s^2)</code>.</li>
+          <li><strong>Hệ bất phương trình bậc nhất 2 ẩn:</strong> Miền nghiệm là miền đa giác lồi; hàm mục tiêu <code>F(x; y) = ax + by</code> đạt GTLN/GTNN tại các đỉnh của miền đa giác.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 3: Dãy số, Cấp số, Lượng giác và Hình học không gian – Oxyz</h4>
+        <ul>
+          <li><strong>Cấp số cộng &amp; Cấp số nhân:</strong> CSC: <code>u_n = u_1 + (n-1)d</code>, <code>S_n = n(u_1 + u_n)/2</code>. CSN: <code>u_n = u_1 &middot; q^{n-1}</code>, <code>S_n = u_1(1 - q^n)/(1 - q)</code> (với <code>q &ne; 1</code>).</li>
+          <li><strong>Hình học không gian cổ điển:</strong> Thể tích khối chóp <code>V = (1/3)Bh</code>; Khối lăng trụ <code>V = Bh</code>; Khối nón <code>V = (1/3)&pi;R^2 h</code>; Khối trụ <code>V = &pi;R^2 h</code>; Khối cầu <code>V = (4/3)&pi;R^3</code>, diện tích mặt cầu <code>S = 4&pi;R^2</code>.</li>
+          <li><strong>Tọa độ Oxyz:</strong> Tích vô hướng <code>u &middot; v = x_1x_2 + y_1y_2 + z_1z_2</code>; Phương trình mặt phẳng <code>A(x-x_0)+B(y-y_0)+C(z-z_0)=0</code>; Khoảng cách từ điểm đến mặt phẳng <code>d(M,(P)) = |Ax_0+By_0+Cz_0+D| / &radic;(A^2+B^2+C^2)</code>; Phương trình mặt cầu tâm <code>I(a,b,c)</code> bán kính <code>R</code>.</li>
+        </ul>
+      </div>
+    `,
+    "science": `
+      <div class="theory-chapter">
+        <h4>Chương 1: Logic học và Suy luận mệnh đề (3 câu)</h4>
+        <ul>
+          <li><strong>Mệnh đề kéo theo &amp; Tương đương:</strong> <code>P &rArr; Q</code> tương đương với phản đảo <code>&not;Q &rArr; &not;P</code> (chú ý: KHÔNG tương đương với <code>Q &rArr; P</code> hay <code>&not;P &rArr; &not;Q</code>). Phủ định của <code>P &rArr; Q</code> là <code>P &and; &not;Q</code>.</li>
+          <li><strong>Định luật De Morgan:</strong> <code>&not;(P &and; Q) &equiv; &not;P &or; &not;Q</code> và <code>&not;(P &or; Q) &equiv; &not;P &and; &not;Q</code>. Phủ định của "Mọi X đều là Y" là "Tồn tại ít nhất một X không là Y".</li>
+          <li><strong>Bài toán sắp xếp thứ tự / phân nhóm:</strong> Lập bảng vị trí (1, 2, 3, 4, 5...), vẽ khối liên kết (ví dụ: A luôn cạnh B), điền điều kiện cố định trước, loại trừ dần phương án sai.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 2: Phân tích số liệu &amp; Biểu đồ (9 câu)</h4>
+        <ul>
+          <li><strong>Công thức tính nhanh:</strong> Tỉ trọng <code>= (Thành phần / Tổng) &times; 100%</code>; Tốc độ tăng trưởng <code>= ((Giá trị sau - Giá trị trước) / Giá trị trước) &times; 100%</code>; Chênh lệch điểm phần trăm (khác với % tăng trưởng).</li>
+          <li><strong>Đọc 4 loại biểu đồ chuẩn V-ACT:</strong> Biểu đồ cột (so sánh giá trị tuyệt đối), Biểu đồ đường (xu hướng theo thời gian), Biểu đồ tròn (cơ cấu tỉ trọng), Biểu đồ kết hợp cột–đường (2 trục tung khác đơn vị — luôn kiểm tra đơn vị từng trục trước khi tính).</li>
+          <li><strong>Kỹ thuật ước lượng:</strong> Làm tròn đến 2 chữ số có nghĩa để loại nhanh 2–3 đáp án nhiễu, chỉ tính chính xác khi 2 đáp án chênh nhau dưới 3%.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 3: Khoa học Tự nhiên (Vật lí – Hóa học – Sinh học)</h4>
+        <ul>
+          <li><strong>Vật lí:</strong> Dao động điều hòa (<code>T = 2&pi;&radic;(m/k)</code>, <code>v_{max} = &omega;A</code>, <code>a_{max} = &omega;^2 A</code>), Sóng cơ (<code>&lambda; = v/f</code>), Điện xoay chiều &amp; Định luật Ôm (<code>I = U/R</code>, <code>P = UI = I^2 R</code>), Vật lí nhiệt (<code>Q = mc&Delta;t</code>, định luật khí lí tưởng <code>pV/T = const</code>), Phóng xạ (<code>N = N_0 &middot; 2^{-t/T}</code>).</li>
+          <li><strong>Hóa học:</strong> Bảo toàn khối lượng, bảo toàn electron (<code>&Sigma;n_{e nhường} = &Sigma;n_{e nhận}</code>), cân bằng hóa học (nguyên lí Le Chatelier), pH dung dịch (<code>pH = -log[H^+]</code>), Hóa hữu cơ (este, lipit, cacbohidrat, amin, amino axit, polime) và pin điện hóa (<code>E^0_{pin} = E^0_{catot} - E^0_{anot}</code>).</li>
+          <li><strong>Sinh học:</strong> Nhân đôi ADN, phiên mã, dịch mã (<code>N = 2A + 2G</code>, chiều dài <code>L = (N/2) &times; 3,4 &Aring;</code>), Quy luật di truyền Mendel, hoán vị gen, di truyền quần thể (Hardy–Weinberg: <code>p^2 + 2pq + q^2 = 1</code>), Tiến hóa và Sinh thái học (lưới thức ăn, hiệu suất sinh thái).</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 4: Khoa học Xã hội (Lịch sử – Địa lí – Kinh tế &amp; Pháp luật)</h4>
+        <ul>
+          <li><strong>Lịch sử:</strong> Kháng chiến chống Pháp (1945–1954: Việt Bắc 1947, Biên giới 1950, Điện Biên Phủ 1954), Kháng chiến chống Mỹ (1954–1975: Đồng Khởi 1960, Mậu Thân 1968, Hiệp định Paris 1973, Chiến dịch Hồ Chí Minh 1975), Công cuộc Đổi mới 1986 và quan hệ quốc tế (ASEAN, Liên Hợp Quốc).</li>
+          <li><strong>Địa lí:</strong> Đặc điểm tự nhiên Việt Nam (nhiệt đới ẩm gió mùa, phân hóa Bắc–Nam, Đông–Tây, theo độ cao), chuyển dịch cơ cấu kinh tế, 7 vùng kinh tế trọng điểm và đọc số liệu xuất nhập khẩu / dân số.</li>
+          <li><strong>Giáo dục Kinh tế &amp; Pháp luật:</strong> Quy luật cung – cầu, lạm phát, thất nghiệp, ngân sách nhà nước, thuế; quyền và nghĩa vụ cơ bản của công dân theo Hiến pháp 2013, pháp luật dân sự – lao động – kinh doanh.</li>
+        </ul>
+      </div>
+    `
+  };
 
   // ---------------------------------------------------------
   // Render Lecture & Practice
@@ -482,8 +633,10 @@
     lectureSummary.textContent = lesson.summary;
     lectureObjectives.innerHTML = lesson.objectives.map((o) => `<li>${o}</li>`).join("");
     const depthGuide = getLevelDepthHtml(subject.id, state.level);
+    const fullTheoryHtml = DETAILED_THEORY_MODULES[subject.id] || "";
     lectureBody.innerHTML =
       lesson.sections.map((sec) => `<h3>${sec.heading}</h3><p>${sec.text}</p>`).join("") +
+      fullTheoryHtml +
       depthGuide;
     lectureExample.textContent = lesson.example;
     lectureTakeaway.textContent = lesson.takeaway;
