@@ -264,12 +264,14 @@
       window.speechSynthesis.cancel();
     }
     state.isSpeaking = false;
-    btnTts.classList.remove("active");
-    btnTts.setAttribute("aria-pressed", "false");
-    btnTts.textContent = "Đọc bài";
+    if (btnTts) {
+      btnTts.classList.remove("active");
+      btnTts.setAttribute("aria-pressed", "false");
+      btnTts.textContent = "Đọc bài";
+    }
   }
 
-  btnTts.addEventListener("click", () => {
+  if (btnTts) btnTts.addEventListener("click", () => {
     if (!("speechSynthesis" in window)) {
       announce("Trình duyệt không hỗ trợ đọc thành tiếng.");
       return;
