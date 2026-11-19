@@ -257,7 +257,7 @@
     state.isSpeaking = false;
     btnTts.classList.remove("active");
     btnTts.setAttribute("aria-pressed", "false");
-    btnTts.textContent = "🔊 Đọc bài giảng";
+    btnTts.textContent = "Đọc bài";
   }
 
   btnTts.addEventListener("click", () => {
@@ -289,7 +289,7 @@
     state.isSpeaking = true;
     btnTts.classList.add("active");
     btnTts.setAttribute("aria-pressed", "true");
-    btnTts.textContent = "⏹️ Dừng đọc";
+    btnTts.textContent = "Dừng đọc";
     announce("Đang đọc bài giảng...");
   });
 
@@ -454,7 +454,7 @@
     lectureLevelTag.textContent = levelMeta.label;
     lectureLevelTag.className = `level-badge ${levelMeta.badgeClass}`;
     lectureGoalTag.textContent = GOAL_META[state.goal];
-    lectureReadTime.textContent = `⏱️ ${lesson.readTime}`;
+    lectureReadTime.textContent = lesson.readTime;
 
     lectureTitle.textContent = lesson.title;
     lectureSummary.textContent = lesson.summary;
@@ -508,7 +508,7 @@
             </div>
             <div class="solution-toggle-wrap">
               <button type="button" class="btn btn-secondary btn-sm btn-toggle-sol" data-idx="${idx}" aria-expanded="false">
-                📖 Xem lời giải chi tiết
+                Xem lời giải
               </button>
             </div>
             <div class="solution-slot hidden" id="sol-slot-${idx}">
@@ -525,7 +525,7 @@
         const slot = document.getElementById(`sol-slot-${idx}`);
         const isHidden = slot.classList.toggle("hidden");
         btn.setAttribute("aria-expanded", String(!isHidden));
-        btn.textContent = isHidden ? "📖 Xem lời giải chi tiết" : "🔼 Ẩn lời giải chi tiết";
+        btn.textContent = isHidden ? "Xem lời giải" : "Ẩn lời giải";
       });
     });
 
@@ -580,7 +580,7 @@
       slot.classList.remove("hidden");
       if (toggleBtn) {
         toggleBtn.setAttribute("aria-expanded", "true");
-        toggleBtn.textContent = "🔼 Ẩn lời giải chi tiết";
+        toggleBtn.textContent = "Ẩn lời giải";
       }
     });
 
