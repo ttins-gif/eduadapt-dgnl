@@ -2171,3 +2171,85 @@ html[data-theme="contrast"] .btn-primary {
 .lecture-depth-box li {
   margin-bottom: 6px;
 }
+
+/* =========================================================
+   4-Part V-ACT Theory Tabs & Detailed Theory Blocks
+   ========================================================= */
+
+.theory-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .theory-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .theory-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.theory-tab {
+  text-align: left;
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.theory-tab:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.theory-tab.active {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.theory-tab strong {
+  font-size: 0.94rem;
+  color: var(--primary);
+}
+
+.theory-tab span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.theory-chapter {
+  margin: 18px 0;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.theory-chapter h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.06rem;
+  color: var(--primary);
+}
+
+.theory-chapter ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.theory-chapter li {
+  margin-bottom: 7px;
+  font-size: 0.93rem;
+}
