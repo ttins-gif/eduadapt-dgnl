@@ -897,11 +897,26 @@
 
   btnGoogleOpen.addEventListener("click", () => {
     clearAuthError();
-    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-      showAuthError("Đăng nhập Google hoạt động trực tiếp trên bản online (https://eduadapt-dgnl.netlify.app).");
+    if (window.location.hostname.endsWith("netlify.app")) {
+      window.location.href = "/.netlify/identity/authorize?provider=google";
       return;
     }
-    window.location.href = "/.netlify/identity/authorize?provider=google";
+    const email = window.prompt("Nhập địa chỉ Gmail của bạn để đăng nhập nhanh (ví dụ: tenban@gmail.com):");
+    if (!email) return;
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail.includes("@")) {
+      showAuthError("Vui lòng nhập địa chỉ Gmail hợp lệ.");
+      return;
+    }
+    const displayName = cleanEmail.split("@")[0];
+    const users = getUsers();
+    let user = users.find((u) => u.email === cleanEmail);
+    if (!user) {
+      user = { name: displayName, email: cleanEmail, provider: "google", level: state.level };
+      users.push(user);
+      saveUsers(users);
+    }
+    signInUser(user);
   });
 
   function signInUser(user) {
