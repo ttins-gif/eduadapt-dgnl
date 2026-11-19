@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EduAdapt ĐGNL — Ôn luyện Đánh giá Năng lực ĐHQG-HCM</title>
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=20" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Chuyển đến nội dung chính</a>
@@ -158,6 +158,9 @@
         </button>
         <button type="button" class="sidebar-btn" data-view="practice">
           <span>Luyện tập</span>
+        </button>
+        <button type="button" class="sidebar-btn" data-view="mock">
+          <span>Thi thử 2026</span>
         </button>
         <button type="button" class="sidebar-btn" data-view="diagnostic">
           <span>Đánh giá</span>
@@ -319,6 +322,42 @@
 
           <div id="adaptive-feedback" class="adaptive-feedback hidden" role="status" aria-live="polite"></div>
         </div>
+      </section>
+
+      <!-- =====================================================
+           VIEW 2B: THI THỬ ĐGNL ĐHQG-HCM 2026 (BẤM GIỜ)
+           ===================================================== -->
+      <section id="view-mock" class="view-section hidden" aria-labelledby="mock-heading">
+        <div class="hero-card" id="mock-intro-card">
+          <div>
+            <h2 id="mock-heading">Thi thử ĐGNL ĐHQG-HCM 2026</h2>
+            <p class="muted">
+              Mô phỏng phòng thi thực tế dựa trên cấu trúc Đề mẫu và Đề chính thức Đợt 1 &amp; Đợt 2 năm 2026 (40 câu — 50 phút — đủ 4 phần: Tiếng Việt, Tiếng Anh, Toán học, Tư duy Khoa học).
+            </p>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-start-mock">
+            Bắt đầu làm bài (50 phút)
+          </button>
+        </div>
+
+        <!-- Thanh trạng thái phòng thi (chỉ hiện khi đang làm bài) -->
+        <div class="mock-sticky-bar hidden" id="mock-sticky-bar">
+          <div class="mock-timer-wrap">
+            <span>Thời gian còn lại:</span>
+            <strong id="mock-timer" class="mock-timer">50:00</strong>
+          </div>
+          <div class="mock-status-right">
+            <span class="score-pill" id="mock-answered-count">Đã làm: 0 / 40</span>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-submit-mock">Nộp bài</button>
+            <button type="button" class="btn btn-secondary btn-sm hidden" id="btn-restart-mock">Thi lại</button>
+          </div>
+        </div>
+
+        <!-- Kết quả thi thử (quy đổi thang 1.200 điểm) -->
+        <div id="mock-result-box" class="result-hero hidden" role="status" aria-live="polite"></div>
+
+        <!-- Nội dung đề thi thử -->
+        <div id="mock-exam-body" class="diag-sections-wrap hidden"></div>
       </section>
 
       <!-- =====================================================
@@ -706,7 +745,8 @@
   </div>
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <script src="data.js?v=19"></script>
-  <script src="app.js?v=19"></script>
+  <script src="data.js?v=20"></script>
+  <script src="mock_exam.js?v=20"></script>
+  <script src="app.js?v=20"></script>
 </body>
 </html>
