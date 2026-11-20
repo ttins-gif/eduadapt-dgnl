@@ -2123,10 +2123,25 @@
         }
       });
 
+      let finalPassageItems = passageItems;
+      if (
+        typeof MOCK_PASSAGE_GROUPS !== "undefined" &&
+        Array.isArray(MOCK_PASSAGE_GROUPS[sec.id]) &&
+        MOCK_PASSAGE_GROUPS[sec.id].length &&
+        passageItems.length === 5 &&
+        chosenIdx % 2 === 1
+      ) {
+        const grp = MOCK_PASSAGE_GROUPS[sec.id][chosenIdx % MOCK_PASSAGE_GROUPS[sec.id].length];
+        finalPassageItems = grp.questions.map((gq, gIdx) => ({
+          ...gq,
+          passage: gIdx === 0 ? grp.passage : undefined
+        }));
+      }
+
       const targetCount = sec.questions.length; // 30 câu/phần
-      const needStandalone = Math.max(0, targetCount - passageItems.length);
+      const needStandalone = Math.max(0, targetCount - finalPassageItems.length);
       const mixedStandalone = shuffleArray([...standalone, ...extraStandalone]).slice(0, needStandalone);
-      const combined = [...mixedStandalone, ...passageItems].map((q, idx) => ({
+      const combined = [...mixedStandalone, ...finalPassageItems].map((q, idx) => ({
         ...shuffleQuestionOptions(q),
         id: `${sec.id}_${variantSeed}_${idx + 1}`
       }));
