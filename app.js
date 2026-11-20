@@ -2179,6 +2179,10 @@
       el.classList.toggle("hidden", idx !== mockCurrentPage);
     });
 
+    mockExamBody.querySelectorAll(".mock-nav-sec-group").forEach((el, idx) => {
+      el.classList.toggle("hidden", idx !== mockCurrentPage);
+    });
+
     mockExamBody.querySelectorAll(".mock-page-tab").forEach((btn, idx) => {
       const isActive = idx === mockCurrentPage;
       btn.classList.toggle("btn-primary", isActive);
@@ -2235,7 +2239,7 @@
             return `<button type="button" class="mock-nav-btn" data-nav-qid="${item.id}" data-nav-sec="${secIdx}" title="Câu ${navQNum}">${navQNum}</button>`;
           })
           .join("");
-        return `<div class="mock-nav-sec-label">${shortName}</div><div class="mock-nav-grid">${btns}</div>`;
+        return `<div class="mock-nav-sec-group ${secIdx === 0 ? "" : "hidden"}" data-nav-sec-idx="${secIdx}"><div class="mock-nav-sec-label">${shortName}</div><div class="mock-nav-grid">${btns}</div></div>`;
       })
       .join("");
 
@@ -2282,11 +2286,7 @@
             </div>
           `;
         })
-        .join("") +
-      `<div class="card" style="padding:14px 16px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <button type="button" class="btn btn-secondary" id="btn-mock-prev-page" disabled>&larr; Quay lại trang trước</button>
-        <button type="button" class="btn btn-primary" id="btn-mock-next-page">Qua trang kế tiếp &rarr;</button>
-      </div>`;
+        .join("");
 
     mockExamBody.innerHTML = `
       <div class="mock-layout">
@@ -2295,6 +2295,10 @@
           <h4>Danh sách câu hỏi</h4>
           <p class="muted small" style="margin:0 0 8px;">Nhấn vào số câu để chuyển nhanh</p>
           ${navSectionsHtml}
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-mock-prev-page" disabled>&larr; Quay lại trang trước</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-mock-next-page">Qua trang kế tiếp &rarr;</button>
+          </div>
         </aside>
       </div>
     `;
