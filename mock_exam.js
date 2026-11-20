@@ -1488,3 +1488,54 @@ const MOCK_EXAM_2026 = {
     }
   ]
 };
+
+// Ngân hàng câu hỏi bổ sung (bám sát Đề Minh họa, Đợt 1 & Đợt 2 V-ACT) để tạo các mã đề khác nhau mỗi lần thi thử
+const MOCK_EXAM_TEMPLATES = [
+  { code: "VACT-01", label: "Đề số 01 — Theo chuẩn Đề Minh họa V-ACT" },
+  { code: "VACT-02", label: "Đề số 02 — Theo chuẩn Đề Chính thức Đợt 1 V-ACT" },
+  { code: "VACT-03", label: "Đề số 03 — Theo chuẩn Đề Chính thức Đợt 2 V-ACT" },
+  { code: "VACT-04", label: "Đề số 04 — Đề Tổng hợp Chọn lọc ĐGNL ĐHQG-HCM" }
+];
+
+const MOCK_EXTRA_POOL = {
+  tv: [
+    { id: "tv_x1", q: "Từ nào sau đây viết SAI chính tả?", options: ["Xán lạn.", "Sát nhập.", "Chỉnh chu.", "Bàng quan."], answer: 1, solution: "Phải viết là 'sáp nhập' (không phải 'sát nhập')." },
+    { id: "tv_x2", q: "Trong các từ sau, từ nào là từ Hán Việt dùng ĐÚNG nghĩa trong câu: 'Anh ấy là một ____ có nhiều đóng góp cho khoa học'?", options: ["tri thức", "trí thức", "chí thức", "tri giác"], answer: 1, solution: "'Trí thức' chỉ tầng lớp người lao động trí óc; 'tri thức' là kiến thức." },
+    { id: "tv_x3", q: "Câu nào sau đây mắc lỗi thiếu chủ ngữ?", options: ["Với tinh thần quyết tâm cao, đội tuyển đã giành huy chương vàng.", "Qua tác phẩm 'Chí Phèo' đã tố cáo xã hội thực dân nửa phong kiến.", "Mùa xuân về, trăm hoa đua nở khắp núi rừng Tây Bắc.", "Những cuốn sách hay luôn mang lại nhiều bài học quý giá."], answer: 1, solution: "'Qua tác phẩm Chí Phèo' là trạng ngữ, khiến câu thiếu chủ ngữ chính." },
+    { id: "tv_x4", q: "Biện pháp tu từ nổi bật trong câu thơ 'Áo chàm đưa buổi phân li / Cầm tay nhau biết nói gì hôm nay' là gì?", options: ["Ẩn dụ.", "Hoán dụ.", "Nhân hóa.", "So sánh."], answer: 1, solution: "'Áo chàm' là hoán dụ (lấy trang phục chỉ đồng bào Việt Bắc)." },
+    { id: "tv_x5", q: "Từ 'yếu điểm' trong tiếng Việt có nghĩa là gì?", options: ["Điểm yếu, khuyết điểm.", "Điểm quan trọng, then chốt.", "Điểm số thấp.", "Điểm khởi đầu."], answer: 1, solution: "'Yếu' (trong trọng yếu, cốt yếu) nghĩa là quan trọng; 'yếu điểm' = điểm quan trọng." },
+    { id: "tv_x6", q: "Phong cách ngôn ngữ của một bản thông báo tuyển sinh đại học là gì?", options: ["Báo chí.", "Chính luận.", "Hành chính.", "Khoa học."], answer: 2, solution: "Thông báo tuyển sinh của cơ quan/nhà trường thuộc phong cách ngôn ngữ hành chính." },
+    { id: "tv_x7", q: "Trong thơ Đường luật thất ngôn bát cú, hai cặp câu nào bắt buộc phải đối nhau?", options: ["Câu 1–2 và câu 3–4.", "Câu 3–4 và câu 5–6.", "Câu 5–6 và câu 7–8.", "Câu 1–2 và câu 7–8."], answer: 1, solution: "Quy định niêm luật thất ngôn bát cú: hai câu thực (3–4) và hai câu luận (5–6) phải đối nhau." },
+    { id: "tv_x8", q: "Dòng nào chỉ gồm các từ láy?", options: ["Lạnh lẽo, xa xôi, quần áo.", "Lung linh, man mác, chênh vênh.", "Tươi tốt, cây cối, rực rỡ.", "Mênh mông, nhà cửa, lấp lánh."], answer: 1, solution: "Lung linh, man mác, chênh vênh đều là từ láy âm đầu." }
+  ],
+  en: [
+    { id: "en_x1", q: "Hardly ____ the station when the train departed.", options: ["had we reached", "we had reached", "did we reach", "we reached"], answer: 0, solution: "Đảo ngữ với Hardly: Hardly + had + S + V3 + when + S + V2." },
+    { id: "en_x2", q: "The number of students applying for V-ACT ____ significantly this year.", options: ["have increased", "has increased", "are increasing", "were increasing"], answer: 1, solution: "'The number of + N số nhiều' luôn đi với động từ chia số ít (has increased)." },
+    { id: "en_x3", q: "If she ____ harder last semester, she would be studying abroad now.", options: ["studied", "had studied", "studies", "would study"], answer: 1, solution: "Câu điều kiện hỗn hợp (loại 3 + loại 2): If + S + had + V3, S + would + V (now)." },
+    { id: "en_x4", q: "Despite ____ very tired, he finished all 120 mock exam questions.", options: ["he was", "being", "was", "to be"], answer: 1, solution: "Sau 'Despite' dùng danh từ hoặc V-ing (being)." },
+    { id: "en_x5", q: "The more you practice reading comprehension, ____ your speed becomes.", options: ["the fast", "the faster", "faster", "the fastest"], answer: 1, solution: "Cấu trúc so sánh kép: The + so sánh hơn + S + V, the + so sánh hơn + S + V." },
+    { id: "en_x6", q: "Neither the teacher nor the students ____ aware of the schedule change.", options: ["was", "were", "is", "has been"], answer: 1, solution: "'Neither A nor B' chia động từ theo chủ ngữ B (the students -> số nhiều -> were)." },
+    { id: "en_x7", q: "It is high time the government ____ stricter measures to reduce air pollution.", options: ["takes", "took", "will take", "has taken"], answer: 1, solution: "Cấu trúc 'It is (high) time + S + V2/ed' diễn tả việc đáng lẽ phải làm ngay." },
+    { id: "en_x8", q: "The documentary ____ we watched yesterday won several international awards.", options: ["who", "whom", "which", "whose"], answer: 2, solution: "'The documentary' là danh từ chỉ vật, làm tân ngữ -> dùng 'which'." }
+  ],
+  math: [
+    { id: "m_x1", q: "Nghiệm của phương trình log_2(x - 1) = 3 là:", options: ["x = 7", "x = 8", "x = 9", "x = 10"], answer: 2, solution: "x - 1 = 2^3 = 8 => x = 9 (thỏa điều kiện x > 1)." },
+    { id: "m_x2", q: "Tích phân ∫_0^1 (3x^2 + 2x) dx có giá trị bằng:", options: ["1", "2", "3", "4"], answer: 1, solution: "Nguyên hàm là x^3 + x^2. Thế cận từ 0 đến 1: (1 + 1) - 0 = 2." },
+    { id: "m_x3", q: "Cho cấp số cộng (u_n) có u_1 = 3 và công sai d = 4. Giá trị u_10 bằng:", options: ["35", "39", "40", "43"], answer: 1, solution: "u_10 = u_1 + 9d = 3 + 9×4 = 39." },
+    { id: "m_x4", q: "Có bao nhiêu cách chọn 3 học sinh từ một nhóm gồm 10 học sinh để làm trực nhật?", options: ["30", "120", "720", "1000"], answer: 1, solution: "Chọn không thứ tự: C(10, 3) = (10×9×8)/(3×2×1) = 120." },
+    { id: "m_x5", q: "Thể tích khối chóp có diện tích đáy B = 15 và chiều cao h = 4 là:", options: ["15", "20", "30", "60"], answer: 1, solution: "V = (1/3)Bh = (1/3)×15×4 = 20." },
+    { id: "m_x6", q: "Trong không gian Oxyz, khoảng cách từ gốc tọa độ O(0;0;0) đến mặt phẳng (P): 2x - y + 2z - 9 = 0 là:", options: ["1", "3", "4,5", "9"], answer: 1, solution: "d(O, (P)) = |-9| / sqrt(2^2 + (-1)^2 + 2^2) = 9 / 3 = 3." },
+    { id: "m_x7", q: "Hàm số y = x^3 - 3x + 2 đạt cực đại tại điểm:", options: ["x = -1", "x = 1", "x = 0", "x = 2"], answer: 0, solution: "y' = 3x^2 - 3 = 0 => x = ±1. Qua x = -1, y' đổi dấu từ + sang - nên đạt cực đại tại x = -1." },
+    { id: "m_x8", q: "Gieo một con xúc xắc cân đối 1 lần. Xác suất để xuất hiện mặt có số chấm chia hết cho 3 là:", options: ["1/6", "1/3", "1/2", "2/3"], answer: 1, solution: "Các mặt chia hết cho 3 là {3, 6} (2 kết quả) => P = 2/6 = 1/3." }
+  ],
+  sci: [
+    { id: "s_x1", q: "Mệnh đề 'Nếu trời mưa thì đường ướt' tương đương logic với mệnh đề nào sau đây?", options: ["Nếu đường ướt thì trời mưa.", "Nếu trời không mưa thì đường không ướt.", "Nếu đường không ướt thì trời không mưa.", "Trời mưa và đường không ướt."], answer: 2, solution: "Mệnh đề P => Q tương đương với mệnh đề phản đảo ¬Q => ¬P." },
+    { id: "s_x2", q: "Một doanh nghiệp có doanh thu năm 2024 là 200 tỉ đồng, năm 2025 là 250 tỉ đồng. Tốc độ tăng trưởng doanh thu năm 2025 so với 2024 là:", options: ["20%", "25%", "50%", "80%"], answer: 1, solution: "Tốc độ tăng trưởng = ((250 - 200) / 200) × 100% = 25%." },
+    { id: "s_x3", q: "Một sóng cơ truyền với tốc độ v = 40 m/s và tần số f = 20 Hz. Bước sóng λ bằng:", options: ["0,5 m", "2 m", "20 m", "800 m"], answer: 1, solution: "λ = v / f = 40 / 20 = 2 m." },
+    { id: "s_x4", q: "Dung dịch HCl có nồng độ [H+] = 0,01 M có giá trị pH bằng:", options: ["1", "2", "12", "13"], answer: 1, solution: "pH = -log(10^-2) = 2." },
+    { id: "s_x5", q: "Một đoạn ADN có chiều dài 5100 Å. Tổng số nuclêôtit (N) của đoạn ADN này là:", options: ["1500", "3000", "4500", "6000"], answer: 1, solution: "L = (N/2) × 3,4 => N = 2 × 5100 / 3,4 = 3000 nuclêôtit." },
+    { id: "s_x6", q: "Sự kiện nào đánh dấu bước ngoặt mở đầu thời kỳ Đổi mới toàn diện ở Việt Nam?", options: ["Đại hội IV (1976).", "Đại hội V (1982).", "Đại hội VI (1986).", "Đại hội VII (1991)."], answer: 2, solution: "Đại hội đại biểu toàn quốc lần thứ VI của Đảng (12/1986) đề ra đường lối Đổi mới." },
+    { id: "s_x7", q: "Vùng kinh tế nào của Việt Nam có thế mạnh nổi bật nhất về sản xuất lúa gạo xuất khẩu?", options: ["Trung du và miền núi Bắc Bộ.", "Tây Nguyên.", "Đồng bằng sông Cửu Long.", "Đông Nam Bộ."], answer: 2, solution: "Đồng bằng sông Cửu Long là vựa lúa lớn nhất cả nước, chiếm trên 50% sản lượng lúa và trên 90% lượng gạo xuất khẩu." },
+    { id: "s_x8", q: "Khi cung hàng hóa lớn hơn cầu (dư cung) trên thị trường cạnh tranh, giá cả thị trường có xu hướng:", options: ["Tăng mạnh.", "Giảm xuống.", "Không thay đổi.", "Tăng gấp đôi."], answer: 1, solution: "Theo quy luật cung – cầu, khi cung > cầu thì giá cả có xu hướng giảm." }
+  ]
+};
