@@ -801,11 +801,21 @@
       const sec = MOCK_EXAM_2026.sections.find((s) => s.id === mockSecId);
       if (sec) {
         const len = sec.questions.length;
+        let activePassage = "";
+        let passageRemaining = 0;
         sec.questions.forEach((q, idx) => {
+          if (q.passage) {
+            activePassage = q.passage;
+            const rangeMatch = q.passage.match(/(\d+)\s*[–-]\s*(\d+)/);
+            passageRemaining = rangeMatch ? Math.max(1, Number(rangeMatch[2]) - Number(rangeMatch[1]) + 1) : 1;
+          }
+          const attachedPassage = passageRemaining > 0 ? activePassage : "";
+          if (passageRemaining > 0) passageRemaining--;
+
           const tier = idx < len / 3 ? 1 : idx < (2 * len) / 3 ? 2 : 3;
           pool.push({
             q: q.q,
-            passage: q.passage || "",
+            passage: attachedPassage,
             options: q.options,
             answer: q.answer,
             steps: [q.solution || "Xem đáp án đúng."],
@@ -2021,9 +2031,19 @@
       const extra = (typeof MOCK_EXTRA_POOL !== "undefined" && MOCK_EXTRA_POOL[sec.id]) || [];
       const standalone = [];
       const passageItems = [];
+      let passageRemaining = 0;
+
       sec.questions.forEach((q) => {
-        if (q.passage) passageItems.push(q);
-        else standalone.push(q);
+        if (q.passage) {
+          const rangeMatch = q.passage.match(/(\d+)\s*[–-]\s*(\d+)/);
+          passageRemaining = rangeMatch ? Math.max(1, Number(rangeMatch[2]) - Number(rangeMatch[1]) + 1) : 1;
+        }
+        if (passageRemaining > 0) {
+          passageItems.push(q);
+          passageRemaining--;
+        } else {
+          standalone.push(q);
+        }
       });
 
       const targetCount = sec.questions.length; // 30 câu/phần
