@@ -662,7 +662,7 @@
     rawSteps.forEach((step) => {
       const text = String(step || "").trim();
       if (!text) return;
-      if (text.length > 140 && text.includes(". ")) {
+      if (text.length > 75 && text.includes(". ")) {
         text.split(/\.\s+/).forEach((part) => {
           const p = part.trim().replace(/\.+$/, "");
           if (p) cleanSteps.push(p + ".");
