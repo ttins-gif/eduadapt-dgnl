@@ -2123,18 +2123,67 @@
     };
   }
 
+  let mockCurrentPage = 0;
+
+  function showMockPage(pageIdx) {
+    if (!currentMockExam || !mockExamBody) return;
+    const totalPages = currentMockExam.sections.length;
+    mockCurrentPage = Math.max(0, Math.min(pageIdx, totalPages - 1));
+
+    mockExamBody.querySelectorAll(".mock-section-page").forEach((el, idx) => {
+      el.classList.toggle("hidden", idx !== mockCurrentPage);
+    });
+
+    mockExamBody.querySelectorAll(".mock-page-tab").forEach((btn, idx) => {
+      const isActive = idx === mockCurrentPage;
+      btn.classList.toggle("btn-primary", isActive);
+      btn.classList.toggle("btn-secondary", !isActive);
+      btn.setAttribute("aria-current", isActive ? "page" : "false");
+    });
+
+    const prevBtn = document.getElementById("btn-mock-prev-page");
+    const nextBtn = document.getElementById("btn-mock-next-page");
+    const indicator = document.getElementById("mock-page-indicator");
+    if (prevBtn) prevBtn.disabled = mockCurrentPage === 0;
+    if (nextBtn) nextBtn.disabled = mockCurrentPage === totalPages - 1;
+    if (indicator) {
+      const secName = currentMockExam.sections[mockCurrentPage].name;
+      indicator.textContent = `Trang ${mockCurrentPage + 1} / ${totalPages}: ${secName}`;
+    }
+
+    if (mockStickyBar) {
+      mockStickyBar.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   function renderMockExam() {
     if (!currentMockExam || !mockExamBody) return;
+    mockCurrentPage = 0;
     let qNum = 0;
     const letters = ["A", "B", "C", "D"];
+    const totalPages = currentMockExam.sections.length;
+
+    const tabsHtml = currentMockExam.sections
+      .map(
+        (sec, idx) => `
+          <button type="button" class="btn btn-sm mock-page-tab ${idx === 0 ? "btn-primary" : "btn-secondary"}" data-mock-page="${idx}">
+            Trang ${idx + 1}: ${sec.name.replace(/\s*\(\d+\s*câu\)/, "")}
+          </button>
+        `
+      )
+      .join("");
 
     mockExamBody.innerHTML =
       `<div class="card" style="padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
         <strong>${currentMockExam.title}</strong>
         <span class="muted small">Đề được sinh ngẫu nhiên khác đề trước • ${currentMockExam.totalQuestions} câu / ${currentMockExam.durationMinutes} phút</span>
+      </div>
+      <div class="card" style="padding:12px 16px; margin-bottom:14px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between;">
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">${tabsHtml}</div>
+        <span class="muted small" id="mock-page-indicator">Trang 1 / ${totalPages}: ${currentMockExam.sections[0].name}</span>
       </div>` +
       currentMockExam.sections
-        .map((sec) => {
+        .map((sec, secIdx) => {
           const itemsHtml = sec.questions
             .map((item) => {
               qNum++;
@@ -2161,13 +2210,28 @@
             .join("");
 
           return `
-            <div class="diag-section-block">
+            <div class="diag-section-block mock-section-page ${secIdx === 0 ? "" : "hidden"}" data-section-idx="${secIdx}">
               <h4 class="diag-section-title">${sec.name}</h4>
               <div class="diag-section-questions">${itemsHtml}</div>
             </div>
           `;
         })
-        .join("");
+        .join("") +
+      `<div class="card" style="padding:14px 16px; margin-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <button type="button" class="btn btn-secondary" id="btn-mock-prev-page" disabled>&larr; Quay lại trang trước</button>
+        <button type="button" class="btn btn-primary" id="btn-mock-next-page">Qua trang kế tiếp &rarr;</button>
+      </div>`;
+
+    mockExamBody.querySelectorAll(".mock-page-tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        showMockPage(Number(btn.dataset.mockPage));
+      });
+    });
+
+    const prevBtn = document.getElementById("btn-mock-prev-page");
+    const nextBtn = document.getElementById("btn-mock-next-page");
+    if (prevBtn) prevBtn.addEventListener("click", () => showMockPage(mockCurrentPage - 1));
+    if (nextBtn) nextBtn.addEventListener("click", () => showMockPage(mockCurrentPage + 1));
 
     mockExamBody.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener("change", () => {
