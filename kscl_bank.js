@@ -11,53 +11,60 @@ if (typeof MOCK_EXTRA_POOL !== 'undefined' && Array.isArray(MOCK_EXTRA_POOL.sci)
   const VNNO1_LOGIC_PASSAGE_2 = "Dựa vào thông tin dưới đây để trả lời câu hỏi:\nNhân dịp tổ chức buổi lễ 20/11, đội văn nghệ của trường định sẽ biểu diễn 5 tiết mục là: đơn ca nam, đơn ca nữ, song ca nam nữ, tốp ca học sinh và tốp ca giáo viên. Thứ tự các tiết mục tuân theo các ràng buộc sau đây:\n- Song ca nam nữ phải được biểu diễn trước đơn ca nữ.\n- Tốp ca học sinh phải được biểu diễn trước tốp ca giáo viên.\n- Đơn ca nam và tốp ca học sinh phải được biểu diễn liền kề nhau.";
   MOCK_EXTRA_POOL.sci.push(
     {
+      id: "sci_vnno1_logic_1",
       passage: VNNO1_LOGIC_PASSAGE_1,
       q: "Danh sách nào dưới đây có thể là thứ tự các học sinh đạt giải, từ giải nhất đến giải năm?",
-      opts: ["M, P, N, Q, R.", "P, R, N, M, Q.", "N, P, R, Q, M.", "R, Q, P, N, M."],
-      ans: 2,
-      exp: "Kiểm tra điều kiện: A sai vì R đứng sau M; B sai vì giải tư là M (phải là N hoặc Q); D sai vì P đạt giải ba. Chỉ có C (N, P, R, Q, M) thỏa mãn đủ 3 điều kiện."
+      options: ["M, P, N, Q, R.", "P, R, N, M, Q.", "N, P, R, Q, M.", "R, Q, P, N, M."],
+      answer: 2,
+      solution: "Kiểm tra điều kiện: A sai vì R đứng sau M; B sai vì giải tư là M (phải là N hoặc Q); D sai vì P đạt giải ba. Chỉ có C (N, P, R, Q, M) thỏa mãn đủ 3 điều kiện."
     },
     {
+      id: "sci_vnno1_logic_2",
       passage: VNNO1_LOGIC_PASSAGE_1,
       q: "Nếu Q đạt giải năm thì M sẽ đạt giải nào?",
-      opts: ["Giải nhất.", "Giải nhì.", "Giải ba.", "Giải tư."],
-      ans: 2,
-      exp: "Q = giải 5 suy ra N = giải 4. Ba vị trí 1, 2, 3 dành cho R, M, P. Vì P ≠ 3 và R phải cao hơn M (nên R ≠ 3), do đó chỉ có M có thể đứng ở vị trí giải ba."
+      options: ["Giải nhất.", "Giải nhì.", "Giải ba.", "Giải tư."],
+      answer: 2,
+      solution: "Q = giải 5 suy ra N = giải 4. Ba vị trí 1, 2, 3 dành cho R, M, P. Vì P ≠ 3 và R phải cao hơn M (nên R ≠ 3), do đó chỉ có M có thể đứng ở vị trí giải ba."
     },
     {
+      id: "sci_vnno1_logic_3",
       passage: VNNO1_LOGIC_PASSAGE_1,
       q: "Nếu M đạt giải nhì thì phát biểu nào sau đây có thể sai?",
-      opts: ["N không đạt giải ba.", "P không đạt giải tư.", "Q không được giải nhất.", "R không đạt giải ba."],
-      ans: 0,
-      exp: "M = giải 2 suy ra R = giải 1 (vì R cao hơn M). Giải tư là N hoặc Q, và P ≠ 3 nên P = giải 5. Khi đó giải 3 là Q hoặc N; nếu Q = giải 4 thì N = giải 3, nên phát biểu 'N không đạt giải ba' có thể sai."
+      options: ["N không đạt giải ba.", "P không đạt giải tư.", "Q không được giải nhất.", "R không đạt giải ba."],
+      answer: 0,
+      solution: "M = giải 2 suy ra R = giải 1 (vì R cao hơn M). Giải tư là N hoặc Q, và P ≠ 3 nên P = giải 5. Khi đó giải 3 là Q hoặc N; nếu Q = giải 4 thì N = giải 3, nên phát biểu 'N không đạt giải ba' có thể sai."
     },
     {
+      id: "sci_vnno1_logic_4",
       passage: VNNO1_LOGIC_PASSAGE_1,
       q: "Nếu P đạt giải cao hơn N đúng 2 bậc thì phát biểu nào sau đây nêu đầy đủ và chính xác danh sách các học sinh có thể đạt giải nhì?",
-      opts: ["P.", "M, R.", "P, R.", "M, P, R."],
-      ans: 2,
-      exp: "Xét N = 4 thì P = 2 (thỏa mãn, P đạt giải nhì). Xét N = 3 thì P = 1, Q = 4, còn R < M nên R = 2, M = 5 (R đạt giải nhì). Nếu M = 2 thì R = 1, còn {3, 4, 5} không xếp được P = N - 2 vì P ≠ 3. Vậy danh sách đầy đủ là P, R."
+      options: ["P.", "M, R.", "P, R.", "M, P, R."],
+      answer: 2,
+      solution: "Xét N = 4 thì P = 2 (thỏa mãn, P đạt giải nhì). Xét N = 3 thì P = 1, Q = 4, còn R < M nên R = 2, M = 5 (R đạt giải nhì). Nếu M = 2 thì R = 1, còn {3, 4, 5} không xếp được P = N - 2 vì P ≠ 3. Vậy danh sách đầy đủ là P, R."
     },
     {
+      id: "sci_vnno1_logic_5",
       passage: VNNO1_LOGIC_PASSAGE_2,
       q: "Có bao nhiêu tiết mục có thể biểu diễn ở vị trí thứ hai?",
-      opts: ["năm.", "bốn.", "ba.", "hai."],
-      ans: 2,
-      exp: "Tốp ca giáo viên không thể ở vị trí 2 (vì TCHS phải ở 1, khi đó ĐCN phải kề TCHS ở 2 — mâu thuẫn). Song ca nam nữ cũng không thể ở 2 (vì vị trí 1 không thể là ĐCNữ, TCGV, TCHS hay ĐCN). Chỉ có 3 tiết mục có thể ở vị trí 2: Đơn ca nữ, Tốp ca học sinh, Đơn ca nam."
+      options: ["năm.", "bốn.", "ba.", "hai."],
+      answer: 2,
+      solution: "Tốp ca giáo viên không thể ở vị trí 2 (vì TCHS phải ở 1, khi đó ĐCN phải kề TCHS ở 2 — mâu thuẫn). Song ca nam nữ cũng không thể ở 2 (vì vị trí 1 không thể là ĐCNữ, TCGV, TCHS hay ĐCN). Chỉ có 3 tiết mục có thể ở vị trí 2: Đơn ca nữ, Tốp ca học sinh, Đơn ca nam."
     },
     {
+      id: "sci_vnno1_logic_6",
       passage: VNNO1_LOGIC_PASSAGE_2,
       q: "Nếu tốp ca giáo viên được biểu diễn trước đơn ca nữ thì điều nào sau đây không thể đúng?",
-      opts: ["Đơn ca nam được biểu diễn ở vị trí thứ hai.", "Đơn ca nữ được biểu diễn ở vị trí thứ tư.", "Song ca nam nữ được biểu diễn đầu tiên.", "Tốp ca học sinh được biểu diễn đầu tiên."],
-      ans: 1,
-      exp: "Nếu Đơn ca nữ ở vị trí 4 thì cả 3 tiết mục (TCHS, ĐCN liền kề nhau và TCGV sau TCHS) phải nằm trước vị trí 4, tức chiếm trọn vị trí 1, 2, 3. Khi đó Song ca nam nữ buộc phải ở vị trí 5 (sau Đơn ca nữ) — trái giả thiết."
+      options: ["Đơn ca nam được biểu diễn ở vị trí thứ hai.", "Đơn ca nữ được biểu diễn ở vị trí thứ tư.", "Song ca nam nữ được biểu diễn đầu tiên.", "Tốp ca học sinh được biểu diễn đầu tiên."],
+      answer: 1,
+      solution: "Nếu Đơn ca nữ ở vị trí 4 thì cả 3 tiết mục (TCHS, ĐCN liền kề nhau và TCGV sau TCHS) phải nằm trước vị trí 4, tức chiếm trọn vị trí 1, 2, 3. Khi đó Song ca nam nữ buộc phải ở vị trí 5 (sau Đơn ca nữ) — trái giả thiết."
     },
     {
+      id: "sci_vnno1_logic_7",
       passage: VNNO1_LOGIC_PASSAGE_2,
       q: "Nếu đơn ca nữ và tốp ca giáo viên không được biểu diễn kề nhau thì điều nào sau đây có thể đúng?",
-      opts: ["Đơn ca nam được biểu diễn cuối cùng.", "Đơn ca nữ được biểu diễn thứ tư.", "Song ca nam nữ biểu diễn thứ ba.", "Tốp ca học sinh biểu diễn thứ hai."],
-      ans: 3,
-      exp: "Xếp thử thứ tự: Đơn ca nam (1) - Tốp ca học sinh (2) - Tốp ca giáo viên (3) - Song ca nam nữ (4) - Đơn ca nữ (5). Thứ tự này thỏa mãn mọi ràng buộc và ĐCNữ không kề TCGV. Chọn D."
+      options: ["Đơn ca nam được biểu diễn cuối cùng.", "Đơn ca nữ được biểu diễn thứ tư.", "Song ca nam nữ biểu diễn thứ ba.", "Tốp ca học sinh biểu diễn thứ hai."],
+      answer: 3,
+      solution: "Xếp thử thứ tự: Đơn ca nam (1) - Tốp ca học sinh (2) - Tốp ca giáo viên (3) - Song ca nam nữ (4) - Đơn ca nữ (5). Thứ tự này thỏa mãn mọi ràng buộc và ĐCNữ không kề TCGV. Chọn D."
     }
   );
 }
