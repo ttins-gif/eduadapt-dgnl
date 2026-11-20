@@ -2151,9 +2151,9 @@
       indicator.textContent = `Trang ${mockCurrentPage + 1} / ${totalPages}: ${secName}`;
     }
 
-    if (mockStickyBar) {
-      mockStickyBar.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }
 
   function renderMockExam() {
