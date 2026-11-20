@@ -2253,3 +2253,87 @@ html[data-theme="contrast"] .btn-primary {
   margin-bottom: 7px;
   font-size: 0.93rem;
 }
+
+/* =========================================================
+   MOCK EXAM 2-COLUMN LAYOUT + RIGHT QUESTION NAVIGATOR
+   ========================================================= */
+.mock-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 268px;
+  gap: 18px;
+  align-items: start;
+}
+
+.mock-main-col {
+  min-width: 0;
+}
+
+.mock-nav-sidebar {
+  position: sticky;
+  top: 84px;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+  padding: 14px;
+}
+
+.mock-nav-sidebar h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.mock-nav-sec-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 10px 0 6px;
+}
+
+.mock-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.mock-nav-btn {
+  border: 1px solid var(--border);
+  background: var(--surface-2, rgba(255, 255, 255, 0.04));
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mock-nav-btn:hover {
+  border-color: var(--primary);
+}
+
+.mock-nav-btn.answered {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+
+.mock-nav-btn.correct {
+  background: rgba(16, 185, 129, 0.24);
+  border-color: #10b981;
+  color: #6ee7b7;
+}
+
+.mock-nav-btn.incorrect {
+  background: rgba(239, 68, 68, 0.24);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+@media (max-width: 960px) {
+  .mock-layout {
+    grid-template-columns: 1fr;
+  }
+  .mock-nav-sidebar {
+    position: static;
+    max-height: none;
+  }
+}
