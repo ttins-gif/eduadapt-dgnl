@@ -591,6 +591,14 @@
           <li><strong>Kỹ thuật CASIO giải nhanh ĐGNL:</strong> Tính giới hạn dãy số/hàm số bằng phím <code>CALC</code> (nhập <code>10^6</code> hoặc <code>x_0 &plusmn; 10^{-6}</code>), kiểm tra tính liên tục, đạo hàm tại điểm (<code>d/dx</code>), tích phân xác định và xử lý nhanh bài toán truy hồi.</li>
         </ul>
       </div>
+      <div class="theory-chapter">
+        <h4>Chương 6: Ma trận Toán V-ACT 2025–2026 &amp; Tổng hợp Công thức Lượng giác</h4>
+        <ul>
+          <li><strong>Ma trận độ khó chuẩn V-ACT:</strong> Mức 1 (Nhận biết) chiếm <strong>30%</strong>, Mức 2 (Thông hiểu) chiếm <strong>40%</strong>, Mức 3 (Vận dụng) chiếm <strong>30%</strong>. Phạm vi trọng tâm gồm: phương trình – bất phương trình – hệ đại số, dãy số – CSC – CSN, giới hạn – liên tục – đạo hàm – tiệm cận – khảo sát hàm số, tổ hợp – xác suất, hình học phẳng, hình học không gian và Oxyz.</li>
+          <li><strong>Hệ thức lượng giác cơ bản &amp; mở rộng:</strong> <code>sin&sup2;a + cos&sup2;a = 1</code>; <code>1 + tan&sup2;a = 1/cos&sup2;a</code>; <code>sin&sup4;a + cos&sup4;a = 1 - 2sin&sup2;a cos&sup2;a</code>; <code>sin&sup6;a + cos&sup6;a = 1 - 3sin&sup2;a cos&sup2;a</code>; <code>sin a &plusmn; cos a = &radic;2 sin(a &plusmn; &pi;/4)</code>.</li>
+          <li><strong>Công thức cộng, nhân đôi, hạ bậc &amp; biến đổi:</strong> <code>sin(a &plusmn; b) = sin a cos b &plusmn; cos a sin b</code>; <code>cos(a &plusmn; b) = cos a cos b &#8723; sin a sin b</code>; <code>sin 2a = 2 sin a cos a</code>; <code>cos 2a = cos&sup2;a - sin&sup2;a = 2cos&sup2;a - 1 = 1 - 2sin&sup2;a</code>; <code>cos&sup2;a = (1 + cos 2a)/2</code>; <code>sin&sup2;a = (1 - cos 2a)/2</code>. Biểu diễn theo <code>t = tan(a/2)</code>: <code>sin a = 2t/(1+t&sup2;)</code>, <code>cos a = (1-t&sup2;)/(1+t&sup2;)</code>.</li>
+        </ul>
+      </div>
     `,
     "science": `
       <div class="theory-chapter">
