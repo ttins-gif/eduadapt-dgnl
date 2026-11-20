@@ -652,16 +652,37 @@
   }
 
   function renderSolutionHtml(quiz, statusClass = "") {
-    const letter = ["A", "B", "C", "D"][quiz.answer];
-    const src = VERIFIED_SOURCES[quiz.sourceId];
+    const letters = ["A", "B", "C", "D"];
+    const letter = letters[quiz.answer];
+    const correctText = quiz.options[quiz.answer];
+
+    // Tách các bước giải dài thành từng ý ngắn, dễ đọc, dễ hiểu
+    const rawSteps = Array.isArray(quiz.steps) ? quiz.steps : [String(quiz.steps || "")];
+    const cleanSteps = [];
+    rawSteps.forEach((step) => {
+      const text = String(step || "").trim();
+      if (!text) return;
+      if (text.length > 140 && text.includes(". ")) {
+        text.split(/\.\s+/).forEach((part) => {
+          const p = part.trim().replace(/\.+$/, "");
+          if (p) cleanSteps.push(p + ".");
+        });
+      } else {
+        cleanSteps.push(text);
+      }
+    });
+
+    const wrongLetters = letters.filter((_, idx) => idx !== quiz.answer).join(", ");
+
     return `
       <div class="solution-box ${statusClass}">
-        <h4>✅ Đáp án đúng: ${letter}. ${quiz.options[quiz.answer]}</h4>
+        <h4>✅ Đáp án đúng: ${letter}. ${correctText}</h4>
+        <p style="margin:6px 0 8px; font-weight:600;">Giải thích chi tiết từng bước:</p>
         <ol class="solution-steps">
-          ${quiz.steps.map((s) => `<li>${s}</li>`).join("")}
+          <li><strong>Bước 1 — Hiểu yêu cầu đề bài:</strong> Đọc kỹ câu hỏi <em>"${quiz.q}"</em>${quiz.passage ? " và dò trực tiếp thông tin liên quan ngay trong đoạn trích/dữ kiện phía trên." : " để xác định đúng kiến thức cần dùng."}</li>
+          ${cleanSteps.map((s, idx) => `<li><strong>Bước ${idx + 2} — Phân tích:</strong> ${s}</li>`).join("")}
+          <li><strong>Kết luận:</strong> Đối chiếu lại 4 lựa chọn, phương án <strong>${letter} (${correctText})</strong> là chính xác nhất; các phương án còn lại (${wrongLetters}) không khớp với dữ kiện hoặc sai bản chất câu hỏi.</li>
         </ol>
-        <div class="solution-tip">💡 <strong>Mẹo ĐGNL:</strong> ${quiz.tip}</div>
-        ${src ? `<div class="solution-source">🛡️ Nguồn kiểm duyệt: <strong>${src.name}</strong></div>` : ""}
       </div>
     `;
   }
