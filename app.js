@@ -2225,7 +2225,21 @@
       )
       .join("");
 
-    mockExamBody.innerHTML =
+    let navQNum = 0;
+    const navSectionsHtml = currentMockExam.sections
+      .map((sec, secIdx) => {
+        const shortName = sec.name.replace(/\s*\(\d+\s*câu\)/, "");
+        const btns = sec.questions
+          .map((item) => {
+            navQNum++;
+            return `<button type="button" class="mock-nav-btn" data-nav-qid="${item.id}" data-nav-sec="${secIdx}" title="Câu ${navQNum}">${navQNum}</button>`;
+          })
+          .join("");
+        return `<div class="mock-nav-sec-label">${shortName}</div><div class="mock-nav-grid">${btns}</div>`;
+      })
+      .join("");
+
+    const mainColHtml =
       `<div class="card" style="padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
         <strong>${currentMockExam.title}</strong>
         <span class="muted small">Đề được sinh ngẫu nhiên khác đề trước • ${currentMockExam.totalQuestions} câu / ${currentMockExam.durationMinutes} phút</span>
@@ -2240,7 +2254,7 @@
             .map((item) => {
               qNum++;
               return `
-                <div class="quiz-item" data-mock-id="${item.id}">
+                <div class="quiz-item" id="mock-q-${item.id}" data-mock-id="${item.id}">
                   ${item.passage ? `<div class="mock-passage">${item.passage}</div>` : ""}
                   <p class="quiz-question">Câu ${qNum}: ${item.q}</p>
                   <div class="quiz-options">
@@ -2274,6 +2288,31 @@
         <button type="button" class="btn btn-primary" id="btn-mock-next-page">Qua trang kế tiếp &rarr;</button>
       </div>`;
 
+    mockExamBody.innerHTML = `
+      <div class="mock-layout">
+        <div class="mock-main-col">${mainColHtml}</div>
+        <aside class="card mock-nav-sidebar" aria-label="Danh sách câu hỏi thi thử">
+          <h4>Danh sách câu hỏi</h4>
+          <p class="muted small" style="margin:0 0 8px;">Nhấn vào số câu để chuyển nhanh</p>
+          ${navSectionsHtml}
+        </aside>
+      </div>
+    `;
+
+    mockExamBody.querySelectorAll(".mock-nav-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const secIdx = Number(btn.dataset.navSec);
+        const qid = btn.dataset.navQid;
+        if (secIdx !== mockCurrentPage) {
+          showMockPage(secIdx);
+        }
+        requestAnimationFrame(() => {
+          const targetEl = document.getElementById(`mock-q-${qid}`);
+          if (targetEl) targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      });
+    });
+
     mockExamBody.querySelectorAll(".mock-page-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
         showMockPage(Number(btn.dataset.mockPage));
@@ -2287,6 +2326,10 @@
 
     mockExamBody.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener("change", () => {
+        const qid = radio.name.replace(/^mock_/, "");
+        const navBtn = mockExamBody.querySelector(`.mock-nav-btn[data-nav-qid="${qid}"]`);
+        if (navBtn) navBtn.classList.add("answered");
+
         let answered = 0;
         currentMockExam.sections.forEach((sec) => {
           sec.questions.forEach((q) => {
@@ -2344,10 +2387,25 @@
           secCorrect++;
           totalCorrect++;
         }
+        const navBtn = mockExamBody.querySelector(`.mock-nav-btn[data-nav-qid="${q.id}"]`);
+        if (navBtn) {
+          navBtn.classList.remove("answered");
+          navBtn.classList.add(isCorrect ? "correct" : "incorrect");
+        }
         const expEl = document.getElementById(`mock-exp-${q.id}`);
         if (expEl) {
           expEl.className = `diag-exp ${isCorrect ? "correct" : "incorrect"}`;
-          expEl.innerHTML = `<strong>${isCorrect ? "Chính xác!" : `Chưa đúng (Đáp án: ${letters[q.answer]}).`}</strong> ${q.solution}`;
+          const solText = String(q.solution || "").trim();
+          const solParts =
+            solText.length > 75 && solText.includes(". ")
+              ? solText
+                  .split(/\.\s+/)
+                  .map((p) => p.trim().replace(/\.+$/, ""))
+                  .filter(Boolean)
+                  .map((p) => `<div style="margin-top:4px;">• ${p}.</div>`)
+                  .join("")
+              : `<div style="margin-top:4px;">${solText}</div>`;
+          expEl.innerHTML = `<strong>${isCorrect ? "✅ Chính xác!" : `❌ Chưa đúng (Đáp án đúng: ${letters[q.answer]}).`}</strong>${solParts}`;
           expEl.classList.remove("hidden");
         }
       });
