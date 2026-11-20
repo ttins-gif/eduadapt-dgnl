@@ -2101,7 +2101,10 @@
     const variantSeed = Math.floor(100 + Math.random() * 900);
 
     const sections = MOCK_EXAM_2026.sections.map((sec) => {
-      const extra = (typeof MOCK_EXTRA_POOL !== "undefined" && MOCK_EXTRA_POOL[sec.id]) || [];
+      const extraStandalone = (
+        (typeof MOCK_EXTRA_POOL !== "undefined" && MOCK_EXTRA_POOL[sec.id]) ||
+        []
+      ).filter((q) => !q.passage);
       const standalone = [];
       const passageItems = [];
       let passageRemaining = 0;
@@ -2112,6 +2115,7 @@
           passageRemaining = rangeMatch ? Math.max(1, Number(rangeMatch[2]) - Number(rangeMatch[1]) + 1) : 1;
         }
         if (passageRemaining > 0) {
+          // Giữ nguyên khối câu hỏi đọc hiểu/dữ kiện theo đúng thứ tự gốc, không xáo trộn vị trí câu
           passageItems.push(q);
           passageRemaining--;
         } else {
@@ -2121,7 +2125,7 @@
 
       const targetCount = sec.questions.length; // 30 câu/phần
       const needStandalone = Math.max(0, targetCount - passageItems.length);
-      const mixedStandalone = shuffleArray([...standalone, ...extra]).slice(0, needStandalone);
+      const mixedStandalone = shuffleArray([...standalone, ...extraStandalone]).slice(0, needStandalone);
       const combined = [...mixedStandalone, ...passageItems].map((q, idx) => ({
         ...shuffleQuestionOptions(q),
         id: `${sec.id}_${variantSeed}_${idx + 1}`
