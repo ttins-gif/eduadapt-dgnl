@@ -495,6 +495,14 @@
           <li><strong>Chiến thuật đọc hiểu ngữ liệu dài:</strong> Đọc câu hỏi trước để khoanh vùng từ khóa, xác định câu chủ đề (thường ở đầu hoặc cuối đoạn), phân biệt thông tin <em>nêu trực tiếp</em> và <em>suy luận hợp lý</em>, tuyệt đối không suy diễn vượt ngoài ngữ liệu.</li>
         </ul>
       </div>
+      <div class="theory-chapter">
+        <h4>Chương 5: Lộ trình Chuyên đề trọng tâm Tiếng Việt mở rộng &amp; Sân khấu dân gian</h4>
+        <ul>
+          <li><strong>Chuyên đề Từ &amp; Câu mở rộng:</strong> Nhận diện lỗi dùng từ sai phong cách, lặp từ, thừa từ, sai trật tự thành phần câu và lỗi quy chiếu đại từ trong đoạn văn dài.</li>
+          <li><strong>Văn học dân gian &amp; Sân khấu dân gian:</strong> Phân biệt đặc trưng nghệ thuật của Chèo (tính ước lệ, hài hước, nhân vật hề chèo), Tuồng (tính bi tráng, cách điệu hóa mặt nạ) và Cải lương (kết hợp đờn ca tài tử Nam Bộ).</li>
+          <li><strong>Văn học trung đại Việt Nam:</strong> Nắm vững tác giả – tác phẩm tiêu biểu từ thế kỷ X–XIX (Nguyễn Trãi, Nguyễn Du, Hồ Xuân Hương, Nguyễn Khuyến, Nguyễn Đình Chiểu) cùng đặc trưng thi pháp ước lệ, tượng trưng.</li>
+        </ul>
+      </div>
     `,
     "lang-en": `
       <div class="theory-chapter">
@@ -526,6 +534,15 @@
         <ul>
           <li><strong>Sửa lỗi sai (5 câu):</strong> Kiểm tra theo thứ tự ưu tiên: (1) Hòa hợp chủ-vị &amp; thì, (2) Cấu trúc song song (<em>and, or, both...and</em>), (3) Từ loại (Adj vs Adv, N vs V), (4) Đại từ quy chiếu, (5) Từ dễ nhầm lẫn (<em>economic/economical, considerable/considerate, historic/historical</em>).</li>
           <li><strong>Đọc hiểu 2 bài (10 câu):</strong> Với câu <em>Main idea</em>: đọc câu đầu/cuối mỗi đoạn, loại đáp án quá hẹp hoặc quá rộng. Với câu <em>Reference (it, they, which)</em>: đọc ngay câu liền trước. Với câu <em>NOT TRUE / EXCEPT</em>: dò từng phương án đối chiếu từ khóa trong bài.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 5: Chuyên đề Ăn điểm (Từ chỉ lượng, Mạo từ, Cụm động từ &amp; Modal Verbs)</h4>
+        <ul>
+          <li><strong>Từ chỉ lượng (Quantifiers):</strong> Phân biệt danh từ đếm được (<em>many, few, a few, several</em>) và không đếm được (<em>much, little, a little, a great deal of</em>); <em>a few / a little</em> (một ít, đủ dùng) khác <em>few / little</em> (rất ít, gần như không).</li>
+          <li><strong>Mạo từ (Articles):</strong> Dùng <em>the</em> với danh từ xác định, so sánh nhất, số thứ tự, nhạc cụ, địa danh có <em>of</em>; không dùng mạo từ trước danh từ số nhiều/không đếm được nói chung, bữa ăn, môn học, môn thể thao.</li>
+          <li><strong>Modal Verbs phỏng đoán quá khứ:</strong> <code>must have + V3</code> (chắc hẳn đã), <code>can't/couldn't have + V3</code> (chắc chắn đã không), <code>might/may/could have + V3</code> (có lẽ đã), <code>should have + V3</code> (lẽ ra nên làm nhưng đã không làm).</li>
+          <li><strong>Cụm động từ (Phrasal Verbs) &amp; Trật tự tính từ (OSASCOMP):</strong> Nắm các cụm hay thi (<em>carry out, come up with, put off, turn down, account for, look into, make up for</em>) và thứ tự tính từ <em>Opinion – Size – Age – Shape – Color – Origin – Material – Purpose</em>.</li>
         </ul>
       </div>
     `,
@@ -566,6 +583,14 @@
           <li><strong>Bài toán thực tế &amp; Hệ phương trình nhiều ẩn:</strong> Đặt ẩn trực tiếp theo đại lượng cần tìm, tận dụng máy tính cầm tay giải nhanh hệ 3–4 ẩn (phương trình đường tròn, parabol, bài toán trộn dung dịch, năng suất, hình học tọa độ Oxy).</li>
         </ul>
       </div>
+      <div class="theory-chapter">
+        <h4>Chương 5: 18 Chủ đề Trọng tâm Hàm số nâng cao &amp; Kỹ thuật CASIO</h4>
+        <ul>
+          <li><strong>Tham số m &amp; Hàm ẩn:</strong> Điều kiện hàm bậc 3 đơn điệu trên <code>&Ropf;</code> (<code>&Delta;_{y'} &le; 0</code>); cực trị hàm bậc 2 trên bậc 1; kỹ thuật ghép trục / đạo hàm hàm hợp <code>[f(u(x))]' = u'(x) &middot; f'(u(x))</code> để tìm cực trị và đơn điệu hàm ẩn.</li>
+          <li><strong>Tiếp tuyến &amp; Tương giao đồ thị:</strong> Phương trình tiếp tuyến tại <code>M(x_0; y_0)</code>: <code>y = f'(x_0)(x - x_0) + y_0</code>; biện luận số nghiệm phương trình bằng số giao điểm đồ thị.</li>
+          <li><strong>Kỹ thuật CASIO giải nhanh ĐGNL:</strong> Tính giới hạn dãy số/hàm số bằng phím <code>CALC</code> (nhập <code>10^6</code> hoặc <code>x_0 &plusmn; 10^{-6}</code>), kiểm tra tính liên tục, đạo hàm tại điểm (<code>d/dx</code>), tích phân xác định và xử lý nhanh bài toán truy hồi.</li>
+        </ul>
+      </div>
     `,
     "science": `
       <div class="theory-chapter">
@@ -598,6 +623,13 @@
           <li><strong>Lịch sử:</strong> Kháng chiến chống Pháp (1945–1954: Việt Bắc 1947, Biên giới 1950, Điện Biên Phủ 1954), Kháng chiến chống Mỹ (1954–1975: Đồng Khởi 1960, Mậu Thân 1968, Hiệp định Paris 1973, Chiến dịch Hồ Chí Minh 1975), Công cuộc Đổi mới 1986 và quan hệ quốc tế (ASEAN, Liên Hợp Quốc).</li>
           <li><strong>Địa lí:</strong> Đặc điểm tự nhiên Việt Nam (nhiệt đới ẩm gió mùa, phân hóa Bắc–Nam, Đông–Tây, theo độ cao), chuyển dịch cơ cấu kinh tế, 7 vùng kinh tế trọng điểm và đọc số liệu xuất nhập khẩu / dân số.</li>
           <li><strong>Giáo dục Kinh tế &amp; Pháp luật:</strong> Quy luật cung – cầu, lạm phát, thất nghiệp, ngân sách nhà nước, thuế; quyền và nghĩa vụ cơ bản của công dân theo Hiến pháp 2013, pháp luật dân sự – lao động – kinh doanh.</li>
+        </ul>
+      </div>
+      <div class="theory-chapter">
+        <h4>Chương 5: Chiến thuật Logic nâng cao (Ordering – Grouping – Mixed) &amp; Đọc Bảng số liệu</h4>
+        <ul>
+          <li><strong>3 Dạng bài Logic cốt lõi:</strong> (1) <em>Ordering (Sắp xếp thứ tự)</em>: kẻ khung vị trí 1..n, cố định mốc trước; (2) <em>Grouping (Phân nhóm)</em>: kiểm soát sĩ số từng nhóm và cặp đối tượng bắt buộc đi cùng / không đi cùng; (3) <em>Mixed Logic</em>: lập bảng 2 chiều (hàng là đối tượng, cột là thuộc tính) đánh dấu <code>&check; / &times;</code>.</li>
+          <li><strong>Phân tích Bảng số liệu &amp; Biểu đồ đường:</strong> Luôn kiểm tra đơn vị tính (nghìn, triệu, tỉ, %) ở tiêu đề bảng; với câu hỏi "tăng nhanh nhất", tính tỉ lệ <code>(sau - trước) / trước</code> thay vì chỉ nhìn hiệu số tuyệt đối.</li>
         </ul>
       </div>
     `
