@@ -1,5 +1,5 @@
 // =========================================================
-// EduAdapt ĐGNL — Kho dữ liệu Ôn luyện ĐGNL ĐHQG-HCM
+// TTEdu — Kho dữ liệu Ôn luyện ĐGNL ĐHQG-HCM
 // Tổng hợp từ các nguồn uy tín đã qua kiểm duyệt
 // =========================================================
 
