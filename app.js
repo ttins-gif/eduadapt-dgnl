@@ -2105,19 +2105,16 @@
       const standalone = [];
       const passageItems = [];
       let passageRemaining = 0;
-      let activePassage = "";
 
       sec.questions.forEach((q) => {
         if (q.passage) {
-          activePassage = q.passage;
           const rangeMatch = q.passage.match(/(\d+)\s*[–-]\s*(\d+)/);
           passageRemaining = rangeMatch ? Math.max(1, Number(rangeMatch[2]) - Number(rangeMatch[1]) + 1) : 1;
         }
         if (passageRemaining > 0) {
-          passageItems.push({ ...q, passage: q.passage || activePassage });
+          passageItems.push(q);
           passageRemaining--;
         } else {
-          activePassage = "";
           standalone.push(q);
         }
       });
