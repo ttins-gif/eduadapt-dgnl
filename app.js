@@ -1828,70 +1828,150 @@
     }
   }
 
+  const LAST_MOCK_IDX_KEY = "ttedu_last_mock_idx_v1";
+  let currentMockExam = null;
+
+  function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function shuffleQuestionOptions(q) {
+    const indexed = q.options.map((text, idx) => ({ text, isAns: idx === q.answer }));
+    const shuffled = shuffleArray(indexed);
+    return {
+      ...q,
+      options: shuffled.map((o) => o.text),
+      answer: shuffled.findIndex((o) => o.isAns)
+    };
+  }
+
+  function buildNextMockExam() {
+    if (typeof MOCK_EXAM_2026 === "undefined") return null;
+    const templates =
+      typeof MOCK_EXAM_TEMPLATES !== "undefined" && MOCK_EXAM_TEMPLATES.length
+        ? MOCK_EXAM_TEMPLATES
+        : [{ code: "VACT-01", label: "Đề số 01 — ĐGNL ĐHQG-HCM" }];
+
+    const lastIdx = Number(localStorage.getItem(LAST_MOCK_IDX_KEY) ?? -1);
+    const candidates = templates.map((_, i) => i).filter((i) => i !== lastIdx);
+    const chosenIdx = candidates.length
+      ? candidates[Math.floor(Math.random() * candidates.length)]
+      : 0;
+    localStorage.setItem(LAST_MOCK_IDX_KEY, String(chosenIdx));
+    const tpl = templates[chosenIdx];
+    const variantSeed = Math.floor(100 + Math.random() * 900);
+
+    const sections = MOCK_EXAM_2026.sections.map((sec) => {
+      const extra = (typeof MOCK_EXTRA_POOL !== "undefined" && MOCK_EXTRA_POOL[sec.id]) || [];
+      const standalone = [];
+      const passageItems = [];
+      sec.questions.forEach((q) => {
+        if (q.passage) passageItems.push(q);
+        else standalone.push(q);
+      });
+
+      const targetCount = sec.questions.length; // 30 câu/phần
+      const needStandalone = Math.max(0, targetCount - passageItems.length);
+      const mixedStandalone = shuffleArray([...standalone, ...extra]).slice(0, needStandalone);
+      const combined = [...mixedStandalone, ...passageItems].map((q, idx) => ({
+        ...shuffleQuestionOptions(q),
+        id: `${sec.id}_${variantSeed}_${idx + 1}`
+      }));
+
+      return {
+        id: sec.id,
+        name: sec.name,
+        questions: combined
+      };
+    });
+
+    return {
+      id: `${tpl.code}-${variantSeed}`,
+      code: `${tpl.code}-${variantSeed}`,
+      title: `${tpl.label} (Mã đề ${tpl.code}-${variantSeed})`,
+      durationMinutes: MOCK_EXAM_2026.durationMinutes,
+      totalQuestions: sections.reduce((sum, s) => sum + s.questions.length, 0),
+      sections
+    };
+  }
+
   function renderMockExam() {
-    if (typeof MOCK_EXAM_2026 === "undefined" || !mockExamBody) return;
+    if (!currentMockExam || !mockExamBody) return;
     let qNum = 0;
     const letters = ["A", "B", "C", "D"];
 
-    mockExamBody.innerHTML = MOCK_EXAM_2026.sections
-      .map((sec) => {
-        const itemsHtml = sec.questions
-          .map((item) => {
-            qNum++;
-            return `
-              <div class="quiz-item" data-mock-id="${item.id}">
-                ${item.passage ? `<div class="mock-passage">${item.passage}</div>` : ""}
-                <p class="quiz-question">Câu ${qNum}: ${item.q}</p>
-                <div class="quiz-options">
-                  ${item.options
-                    .map(
-                      (opt, idx) => `
-                    <label class="quiz-option">
-                      <input type="radio" name="mock_${item.id}" value="${idx}" />
-                      <span><strong>${letters[idx]}.</strong> ${opt}</span>
-                    </label>
-                  `
-                    )
-                    .join("")}
+    mockExamBody.innerHTML =
+      `<div class="card" style="padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <strong>${currentMockExam.title}</strong>
+        <span class="muted small">Đề được sinh ngẫu nhiên khác đề trước • ${currentMockExam.totalQuestions} câu / ${currentMockExam.durationMinutes} phút</span>
+      </div>` +
+      currentMockExam.sections
+        .map((sec) => {
+          const itemsHtml = sec.questions
+            .map((item) => {
+              qNum++;
+              return `
+                <div class="quiz-item" data-mock-id="${item.id}">
+                  ${item.passage ? `<div class="mock-passage">${item.passage}</div>` : ""}
+                  <p class="quiz-question">Câu ${qNum}: ${item.q}</p>
+                  <div class="quiz-options">
+                    ${item.options
+                      .map(
+                        (opt, idx) => `
+                      <label class="quiz-option">
+                        <input type="radio" name="mock_${item.id}" value="${idx}" />
+                        <span><strong>${letters[idx]}.</strong> ${opt}</span>
+                      </label>
+                    `
+                      )
+                      .join("")}
+                  </div>
+                  <div class="diag-exp hidden" id="mock-exp-${item.id}"></div>
                 </div>
-                <div class="diag-exp hidden" id="mock-exp-${item.id}"></div>
-              </div>
-            `;
-          })
-          .join("");
+              `;
+            })
+            .join("");
 
-        return `
-          <div class="diag-section-block">
-            <h4 class="diag-section-title">${sec.name}</h4>
-            <div class="diag-section-questions">${itemsHtml}</div>
-          </div>
-        `;
-      })
-      .join("");
+          return `
+            <div class="diag-section-block">
+              <h4 class="diag-section-title">${sec.name}</h4>
+              <div class="diag-section-questions">${itemsHtml}</div>
+            </div>
+          `;
+        })
+        .join("");
 
     mockExamBody.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener("change", () => {
         let answered = 0;
-        MOCK_EXAM_2026.sections.forEach((sec) => {
+        currentMockExam.sections.forEach((sec) => {
           sec.questions.forEach((q) => {
             if (mockExamBody.querySelector(`input[name="mock_${q.id}"]:checked`)) answered++;
           });
         });
-        mockAnsweredCount.textContent = `Đã làm: ${answered} / ${MOCK_EXAM_2026.totalQuestions}`;
+        mockAnsweredCount.textContent = `Đã làm: ${answered} / ${currentMockExam.totalQuestions}`;
       });
     });
   }
 
   function startMockExam() {
+    currentMockExam = buildNextMockExam();
+    if (!currentMockExam) return;
     stopMockTimer();
     mockSubmitted = false;
-    mockSecondsLeft = MOCK_EXAM_2026.durationMinutes * 60;
+    mockSecondsLeft = currentMockExam.durationMinutes * 60;
     mockTimerEl.textContent = formatTimer(mockSecondsLeft);
-    mockAnsweredCount.textContent = `Đã làm: 0 / ${MOCK_EXAM_2026.totalQuestions}`;
+    mockAnsweredCount.textContent = `Đã làm: 0 / ${currentMockExam.totalQuestions}`;
     mockResultBox.classList.add("hidden");
     mockResultBox.innerHTML = "";
     btnSubmitMock.classList.remove("hidden");
     btnRestartMock.classList.add("hidden");
+    btnRestartMock.textContent = "Thi đề mới khác";
     mockStickyBar.classList.remove("hidden");
     mockExamBody.classList.remove("hidden");
 
@@ -1904,11 +1984,11 @@
         gradeMockExam(true);
       }
     }, 1000);
-    announce(`Đã bắt đầu bài thi thử ĐGNL (${MOCK_EXAM_2026.durationMinutes} phút — ${MOCK_EXAM_2026.totalQuestions} câu).`);
+    announce(`Đã bắt đầu ${currentMockExam.title}.`);
   }
 
   function gradeMockExam(autoSubmitted = false) {
-    if (mockSubmitted) return;
+    if (mockSubmitted || !currentMockExam) return;
     mockSubmitted = true;
     stopMockTimer();
 
@@ -1916,7 +1996,7 @@
     let totalCorrect = 0;
     const breakdown = [];
 
-    MOCK_EXAM_2026.sections.forEach((sec) => {
+    currentMockExam.sections.forEach((sec) => {
       let secCorrect = 0;
       sec.questions.forEach((q) => {
         const checked = mockExamBody.querySelector(`input[name="mock_${q.id}"]:checked`);
@@ -1939,16 +2019,16 @@
       });
     });
 
-    const total = MOCK_EXAM_2026.totalQuestions;
+    const total = currentMockExam.totalQuestions;
     const estScore1200 = Math.round((totalCorrect / total) * 1200);
     const percent = Math.round((totalCorrect / total) * 100);
 
-    recordQuizResult("mock-vact", "Thi thử ĐGNL", state.level, totalCorrect, total, percent);
+    recordQuizResult("mock-vact", `Thi thử ĐGNL (${currentMockExam.code})`, state.level, totalCorrect, total, percent);
 
     mockResultBox.innerHTML = `
       <div class="result-hero-top">
         <div>
-          <span class="muted small">${autoSubmitted ? "HẾT GIỜ — TỰ ĐỘNG NỘP BÀI" : "KẾT QUẢ THI THỬ ĐGNL ĐHQG-HCM"}</span>
+          <span class="muted small">${autoSubmitted ? "HẾT GIỜ — TỰ ĐỘNG NỘP BÀI" : `KẾT QUẢ ${currentMockExam.title.toUpperCase()}`}</span>
           <div class="result-level-big">Điểm quy đổi ước lượng: <span class="level-badge level-intermediate" style="font-size:1.1rem; padding:6px 14px;">${estScore1200} / 1.200 điểm</span></div>
         </div>
         <div class="score-pill" style="font-size:1rem; padding:8px 14px;">Đúng: ${totalCorrect} / ${total} câu (${percent}%)</div>
@@ -1965,13 +2045,13 @@
           )
           .join("")}
       </div>
-      <p class="muted small" style="margin:0;">Kéo xuống dưới để xem đáp án đúng và lời giải chi tiết cho toàn bộ ${total} câu.</p>
+      <p class="muted small" style="margin:0;">Kéo xuống dưới để xem đáp án đúng và lời giải chi tiết cho toàn bộ ${total} câu. Nhấn "Thi đề mới khác" để làm mã đề mới không trùng lặp.</p>
     `;
     mockResultBox.classList.remove("hidden");
     btnSubmitMock.classList.add("hidden");
     btnRestartMock.classList.remove("hidden");
     mockResultBox.scrollIntoView({ behavior: "smooth", block: "start" });
-    announce(`Hoàn thành thi thử: ${totalCorrect}/${total} câu (ước lượng ${estScore1200}/1200 điểm).`);
+    announce(`Hoàn thành ${currentMockExam.title}: ${totalCorrect}/${total} câu (ước lượng ${estScore1200}/1200 điểm).`);
   }
 
   if (btnStartMock) btnStartMock.addEventListener("click", startMockExam);
