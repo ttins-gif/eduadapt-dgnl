@@ -555,6 +555,17 @@
           <li><strong>Tọa độ Oxyz:</strong> Tích vô hướng <code>u &middot; v = x_1x_2 + y_1y_2 + z_1z_2</code>; Phương trình mặt phẳng <code>A(x-x_0)+B(y-y_0)+C(z-z_0)=0</code>; Khoảng cách từ điểm đến mặt phẳng <code>d(M,(P)) = |Ax_0+By_0+Cz_0+D| / &radic;(A^2+B^2+C^2)</code>; Phương trình mặt cầu tâm <code>I(a,b,c)</code> bán kính <code>R</code>.</li>
         </ul>
       </div>
+      <div class="theory-chapter">
+        <h4>Chương 4: Kỹ thuật giải Phương trình, Bất phương trình &amp; Hệ bậc nhất nhiều ẩn</h4>
+        <ul>
+          <li><strong>Hằng đẳng thức &amp; Tam thức bậc 2:</strong> Nắm chắc 7 hằng đẳng thức cơ bản và mở rộng; xét dấu tam thức <code>f(x) = ax^2 + bx + c</code> (trong trái – ngoài cùng khi <code>&Delta; &gt; 0</code>; luôn cùng dấu <code>a</code> khi <code>&Delta; &lt; 0</code>).</li>
+          <li><strong>Kết luận nghiệm nhanh hệ bậc nhất 2 ẩn:</strong> Với hệ <code>a_1x + b_1y = c_1</code> và <code>a_2x + b_2y = c_2</code>:
+            <code>a_1/a_2 &ne; b_1/b_2</code> &rArr; có nghiệm duy nhất;
+            <code>a_1/a_2 = b_1/b_2 &ne; c_1/c_2</code> &rArr; vô nghiệm;
+            <code>a_1/a_2 = b_1/b_2 = c_1/c_2</code> &rArr; vô số nghiệm.</li>
+          <li><strong>Bài toán thực tế &amp; Hệ phương trình nhiều ẩn:</strong> Đặt ẩn trực tiếp theo đại lượng cần tìm, tận dụng máy tính cầm tay giải nhanh hệ 3–4 ẩn (phương trình đường tròn, parabol, bài toán trộn dung dịch, năng suất, hình học tọa độ Oxy).</li>
+        </ul>
+      </div>
     `,
     "science": `
       <div class="theory-chapter">
