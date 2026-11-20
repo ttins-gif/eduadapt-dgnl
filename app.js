@@ -1,5 +1,5 @@
 // =========================================================
-// EduAdapt ĐGNL — Core Application Logic (Sidebar + 20-Q Test + Google OAuth)
+// TTEdu — Core Application Logic (Sidebar + 20-Q Test + Google OAuth)
 // =========================================================
 
 (function () {
