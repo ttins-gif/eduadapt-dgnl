@@ -137,5 +137,73 @@ const MOCK_PASSAGE_GROUPS = {
         }
       ]
     }
+  ],
+  en: [
+    {
+      groupId: "en_group_urban_forests",
+      passage: "Read the following passage and answer questions 56–60:\nAs cities expand rapidly around the world, urban heat islands have become a serious environmental challenge. Concrete roads, glass skyscrapers, and dark rooftops absorb solar radiation during the day and release it slowly at night, making urban centers several degrees warmer than surrounding rural areas. To combat this problem, many municipalities are investing in 'urban forests' — networks of street trees, pocket parks, and green rooftops.\nResearch shows that a single mature tree can transpire hundreds of liters of water per day, naturally cooling the surrounding air like a biological air conditioner. Beyond temperature reduction, urban trees filter fine particulate matter (PM2.5), absorb carbon dioxide, and reduce stormwater runoff during heavy rains. Economists also note that neighborhoods with healthy tree canopies tend to have lower electricity bills in summer and higher property values.\nHowever, expanding urban greenery is not without obstacles. City planners must select drought-tolerant native species that can survive compacted soil, air pollution, and limited root space. Without long-term maintenance budgets, newly planted saplings often fail to reach maturity, underscoring that urban forestry requires sustained community commitment rather than one-time planting campaigns.",
+      questions: [
+        {
+          id: "en_uf_1",
+          q: "What is the main purpose of the passage?",
+          options: [
+            "To explain how urban forests help cool cities and the challenges of maintaining them.",
+            "To argue that skyscrapers should be banned in modern cities.",
+            "To compare rural agriculture with urban gardening techniques.",
+            "To describe the history of air conditioning systems."
+          ],
+          answer: 0,
+          solution: "The passage introduces urban heat islands, explains how urban forests cool cities and bring extra benefits, and concludes with the challenges of maintaining them."
+        },
+        {
+          id: "en_uf_2",
+          q: "According to paragraph 1, why are city centers warmer than nearby rural areas?",
+          options: [
+            "Because urban surfaces absorb heat during the day and release it slowly at night.",
+            "Because rural areas receive less sunlight throughout the year.",
+            "Because cities have too many pocket parks and green rooftops.",
+            "Because wind speeds are always higher in downtown districts."
+          ],
+          answer: 0,
+          solution: "Paragraph 1 explicitly states that concrete roads, glass skyscrapers, and dark rooftops absorb solar radiation during the day and release it slowly at night."
+        },
+        {
+          id: "en_uf_3",
+          q: "Which of the following is NOT mentioned as a benefit of urban trees in paragraph 2?",
+          options: [
+            "Filtering fine particulate matter from the air.",
+            "Reducing stormwater runoff during heavy rainfall.",
+            "Lowering summer electricity bills in nearby neighborhoods.",
+            "Eliminating the need for public transportation."
+          ],
+          answer: 3,
+          solution: "Paragraph 2 mentions filtering PM2.5, reducing stormwater runoff, and lowering summer electricity bills, but never mentions public transportation."
+        },
+        {
+          id: "en_uf_4",
+          q: "The word 'transpire' in paragraph 2 is closest in meaning to:",
+          options: [
+            "release moisture into the air",
+            "freeze water underground",
+            "block sunlight completely",
+            "destroy concrete pavements"
+          ],
+          answer: 0,
+          solution: "In the context of trees cooling the surrounding air like a biological air conditioner, 'transpire' means releasing water vapor/moisture into the air."
+        },
+        {
+          id: "en_uf_5",
+          q: "What can be inferred from paragraph 3 about urban tree-planting campaigns?",
+          options: [
+            "Planting trees once is not enough without ongoing care and funding.",
+            "Any tree species can easily survive in compacted city soil.",
+            "Urban saplings grow faster without community involvement.",
+            "Maintenance budgets are unnecessary once trees are planted."
+          ],
+          answer: 0,
+          solution: "Paragraph 3 warns that without long-term maintenance budgets, saplings fail to reach maturity, showing that sustained commitment is essential."
+        }
+      ]
+    }
   ]
 };
