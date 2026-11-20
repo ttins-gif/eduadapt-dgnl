@@ -1,4 +1,4 @@
-// EduAdapt DGNL - Full 120-Question, 150-Minute Official Structure Mock Exam
+// TTEdu - Full 120-Question, 150-Minute Official Structure Mock Exam
 const MOCK_EXAM_2026 = {
   "id": "vact-full-120",
   "title": "Đề Thi Thử ĐGNL ĐHQG-HCM (120 câu — 150 phút)",
