@@ -2123,19 +2123,24 @@
         }
       });
 
-      let finalPassageItems = passageItems;
+      let finalPassageItems = passageItems.slice();
       if (
         typeof MOCK_PASSAGE_GROUPS !== "undefined" &&
         Array.isArray(MOCK_PASSAGE_GROUPS[sec.id]) &&
         MOCK_PASSAGE_GROUPS[sec.id].length &&
-        passageItems.length === 5 &&
-        chosenIdx % 2 === 1
+        finalPassageItems.length >= 5
       ) {
-        const grp = MOCK_PASSAGE_GROUPS[sec.id][chosenIdx % MOCK_PASSAGE_GROUPS[sec.id].length];
-        finalPassageItems = grp.questions.map((gq, gIdx) => ({
-          ...gq,
-          passage: gIdx === 0 ? grp.passage : undefined
-        }));
+        const turnKey = `ttedu_passage_turn_${sec.id}`;
+        const turn = (Number(localStorage.getItem(turnKey) ?? -1) + 1) % (MOCK_PASSAGE_GROUPS[sec.id].length + 1);
+        localStorage.setItem(turnKey, String(turn));
+        if (turn > 0) {
+          const grp = MOCK_PASSAGE_GROUPS[sec.id][turn - 1];
+          const replaced = grp.questions.map((gq, gIdx) => ({
+            ...gq,
+            passage: gIdx === 0 ? grp.passage : undefined
+          }));
+          finalPassageItems = [...finalPassageItems.slice(0, finalPassageItems.length - 5), ...replaced];
+        }
       }
 
       const targetCount = sec.questions.length; // 30 câu/phần
