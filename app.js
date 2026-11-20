@@ -2151,9 +2151,16 @@
       indicator.textContent = `Trang ${mockCurrentPage + 1} / ${totalPages}: ${secName}`;
     }
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      document.querySelectorAll("main, .main-content, .app-shell, #view-mock").forEach((el) => {
+        if (el && el.scrollTop) el.scrollTop = 0;
+      });
+      const introCard = document.getElementById("mock-intro-card");
+      if (introCard) introCard.scrollIntoView({ behavior: "auto", block: "start" });
+    });
   }
 
   function renderMockExam() {
