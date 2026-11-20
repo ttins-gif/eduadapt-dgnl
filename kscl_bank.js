@@ -68,3 +68,74 @@ if (typeof MOCK_EXTRA_POOL !== 'undefined' && Array.isArray(MOCK_EXTRA_POOL.sci)
     }
   );
 }
+
+const MOCK_PASSAGE_GROUPS = {
+  tv: [
+    {
+      groupId: "tv_group_post_cinema",
+      passage: "Đọc đoạn văn sau và trả lời các câu hỏi từ 26 đến 30:\nNăm 2002, trong điện ảnh thế giới có hai hiện tượng nổi bật - đó là việc phát hành ở Nga bộ phim Russian Ark của đạo diễn Aleksandr Sokurov, và ở Mỹ bộ phim Attack of the Clones (phần II của series phim Star Wars) của đạo diễn George Lucas. Ngoài những khác biệt về doanh thu, sự đánh giá của giới phê bình, điểm chung của hai bộ phim là đánh dấu một sự thay đổi mang tính đột phá, cách mạng trong làm phim: đó là hai bộ phim đầu tiên được quay hoàn toàn trên thiết bị làm phim kỹ thuật số. Hệ thống 24 khung hình kỹ thuật số với độ phân giải cao đã hoàn toàn nâng cao nghệ thuật làm phim, từ cách quay phim, cách dựng phim, đến cách phim hiển thị trên màn ảnh. Sau cả thế kỷ quay phim bằng phim nhựa, giờ đây ngành công nghiệp điện ảnh đã chính thức bắt đầu quá trình chuyển khỏi “celluloid” khi có được khả năng làm phim kỹ thuật số vừa rẻ vừa dễ sử dụng.\nTiếp theo việc áp dụng làm phim kỹ thuật số, giai đoạn thay đổi kế tiếp là kể chuyện trong phim. Giai đoạn này vượt ra ngoài việc sử dụng thiết bị kỹ thuật số, vượt ra ngoài cách quay và dựng phim về mặt vật lí; nó đánh dấu một thời điểm quan trọng đối với cách kể những câu chuyện điện ảnh, cách những câu chuyện diễn ra dưới dạng hình ảnh. Đó là hậu điện ảnh (Post-Cinema) – một thuật ngữ được các nhà nghiên cứu và lý luận điện ảnh sử dụng để mô tả sự chuyển đổi của ngành công nghiệp điện ảnh từ thế kỷ XX sang thế kỷ XXI.\nTrong những thập niên đầu thế kỷ XXI, trên sách báo thường xuất hiện hàng loạt từ bắt đầu bằng tiếp đầu ngữ hậu/ post-. Đối với những từ mới này, chìa khóa để hiểu là ngữ nghĩa của sự mơ hồ. Hậu không chỉ ra điều gì đó hoàn toàn khác mà là điều gì đó tiếp theo. Hậu là một “tiền tố mang tính vấn đề”, không phải là dấu hiệu của sự khởi đầu và kết thúc rõ rệt, mà là dấu hiệu của một sự thay đổi hoặc biến đổi tinh tế hơn trong lĩnh vực điện ảnh của các hình thức trải nghiệm và thẩm mỹ chiếm ưu thế về mặt văn hóa.\n(Trích “Những thập niên cuối thế kỉ XX - đầu thế kỉ XXI”, Phạm Gia Lâm, NXB ĐHQG Hà Nội, 2014)",
+      questions: [
+        {
+          id: "tv_pc_1",
+          q: "Vấn đề chính được đặt ra trong văn bản là gì?",
+          options: [
+            "So sánh sự thành công của hai bộ phim nổi bật trong năm 2002.",
+            "Trình bày sự chuyển đổi từ kỹ thuật làm phim nhựa sang kỹ thuật số trong điện ảnh.",
+            "Giới thiệu khái niệm “hậu điện ảnh” như một xu hướng kỹ thuật và thẩm mỹ điện ảnh hiện đại.",
+            "Phân tích ảnh hưởng của các thiết bị hiện đại đối với doanh thu phim và thị hiếu khán giả."
+          ],
+          answer: 2,
+          solution: "Văn bản đi từ dấu mốc 2002 (làm phim kỹ thuật số) để dẫn sang giai đoạn kế tiếp là khái niệm “hậu điện ảnh (Post-Cinema)” và phân tích bản chất của thuật ngữ này."
+        },
+        {
+          id: "tv_pc_2",
+          q: "Theo văn bản, cụm từ “hậu điện ảnh” (post-cinema) nên được hiểu như thế nào cho chính xác?",
+          options: [
+            "Là một bước phát triển tiếp nối của điện ảnh, biểu hiện sự chuyển biến trong tư duy kể chuyện và thẩm mỹ điện ảnh hiện đại.",
+            "Là một giai đoạn hoàn toàn mới của điện ảnh, trong đó mọi yếu tố truyền thống đều bị thay thế bởi kỹ thuật số.",
+            "Là cách gọi của giới phê bình dành cho các bộ phim sử dụng thiết bị kỹ thuật cao trong sản xuất và trình chiếu.",
+            "Là sự kết thúc hoàn toàn của điện ảnh truyền thống, nhường chỗ cho một hình thức kể chuyện phi tuyến tính."
+          ],
+          answer: 0,
+          solution: "Văn bản nêu rõ: 'Hậu không chỉ ra điều gì đó hoàn toàn khác mà là điều gì đó tiếp theo', đánh dấu sự biến đổi tinh tế trong cách kể chuyện, trải nghiệm và thẩm mỹ điện ảnh."
+        },
+        {
+          id: "tv_pc_3",
+          q: "Vì sao thuật ngữ “hậu” được gọi là “tiền tố mang tính vấn đề”?",
+          options: [
+            "Vì nó chỉ các khái niệm hoàn toàn mới, không liên quan đến quá khứ hay truyền thống nghệ thuật trước đó.",
+            "Vì nó không xác định rạch ròi ranh giới giữa cái cũ và cái mới, mà phản ánh sự chuyển biến không rõ điểm bắt đầu và kết thúc.",
+            "Vì nó được dùng để mô tả các xu hướng nghệ thuật mang tính tạm thời, chưa được công nhận rộng rãi.",
+            "Vì nó thường gây tranh cãi trong giới phê bình vì không phản ánh chính xác đặc điểm của giai đoạn sau."
+          ],
+          answer: 1,
+          solution: "Đoạn cuối khẳng định: 'hậu là một tiền tố mang tính vấn đề... không phải là dấu hiệu của sự khởi đầu và kết thúc rõ rệt, mà là dấu hiệu của một sự thay đổi hoặc biến đổi tinh tế hơn'."
+        },
+        {
+          id: "tv_pc_4",
+          q: "Sự khác biệt giữa điện ảnh truyền thống và hậu điện ảnh thể hiện rõ nhất qua đặc điểm nào sau đây?",
+          options: [
+            "Điện ảnh truyền thống chú trọng vào hiệu ứng thị giác, còn hậu điện ảnh tập trung vào nhân vật và cốt truyện.",
+            "Điện ảnh truyền thống sử dụng phim nhựa, còn hậu điện ảnh gắn với sự thay đổi cả về công nghệ làm phim lẫn cách kể chuyện.",
+            "Hậu điện ảnh là giai đoạn tiếp theo của điện ảnh truyền thống, mang ý nghĩa đối lập hoàn toàn với các giá trị cũ.",
+            "Cả hai đều sử dụng kỹ thuật quay phim như nhau, chỉ khác ở đề tài và thị hiếu khán giả."
+          ],
+          answer: 1,
+          solution: "Điện ảnh truyền thống quay bằng phim nhựa (celluloid), còn hậu điện ảnh đánh dấu bước chuyển sang công nghệ kỹ thuật số kết hợp thay đổi sâu sắc trong cách kể chuyện điện ảnh."
+        },
+        {
+          id: "tv_pc_5",
+          q: "Theo văn bản, vì sao thuật ngữ “hậu điện ảnh (post-cinema)” được xem là một từ ngữ học thuật mang tính vấn đề?",
+          options: [
+            "Vì nó không mang ý nghĩa rõ ràng một cách dứt khoát, mà gợi ra sự chuyển đổi tinh tế và đang còn tranh luận.",
+            "Vì đây là một thuật ngữ hoàn toàn mới, chưa từng được sử dụng trong bất kỳ lĩnh vực học thuật nào trước đó.",
+            "Vì nó chỉ dùng trong giới nghiên cứu điện ảnh nên gây khó hiểu với số đông công chúng.",
+            "Vì nó thể hiện sự đối lập hoàn toàn giữa các trào lưu điện ảnh cũ và mới, gây tranh cãi gay gắt."
+          ],
+          answer: 0,
+          solution: "Văn bản nêu rõ 'không có sự đồng thuận hoàn toàn về cách định nghĩa chính xác', chìa khóa để hiểu là 'ngữ nghĩa của sự mơ hồ' và sự chuyển đổi tinh tế."
+        }
+      ]
+    }
+  ]
+};
