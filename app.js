@@ -657,19 +657,25 @@
       })
       .join("");
 
-    // Render Practice Quizzes
-    quizProgress.textContent = `0 / ${lesson.quizzes.length} câu`;
+    // Render Practice Quizzes (5 câu từ dễ đến khó, căn cứ trình độ, không trùng câu trước)
+    currentPracticeQuizzes = buildPracticeQuizSet(subject.id, state.level);
+    quizProgress.textContent = `0 / ${currentPracticeQuizzes.length} câu`;
     adaptiveFeedback.classList.add("hidden");
     adaptiveFeedback.innerHTML = "";
     btnSubmitQuiz.classList.remove("hidden");
     btnRetryQuiz.classList.add("hidden");
+    btnRetryQuiz.textContent = "Làm lại (5 câu mới)";
 
-    quizContainer.innerHTML = lesson.quizzes
+    quizContainer.innerHTML = currentPracticeQuizzes
       .map((item, idx) => {
         const letters = ["A", "B", "C", "D"];
         return `
           <div class="quiz-item" data-quiz-idx="${idx}">
-            <p class="quiz-question">Câu ${idx + 1}: ${item.q}</p>
+            ${item.passage ? `<div class="mock-passage">${item.passage}</div>` : ""}
+            <p class="quiz-question">
+              <span class="meta-pill" style="margin-right:8px; font-size:0.78rem;">Mức ${idx + 1}/5: ${item.diffLabel}</span>
+              Câu ${idx + 1}: ${item.q}
+            </p>
             <div class="quiz-options">
               ${item.options
                 .map(
@@ -707,10 +713,10 @@
 
     quizContainer.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener("change", () => {
-        const answered = lesson.quizzes.filter((_, i) =>
+        const answered = currentPracticeQuizzes.filter((_, i) =>
           quizContainer.querySelector(`input[name="q_${i}"]:checked`)
         ).length;
-        quizProgress.textContent = `${answered} / ${lesson.quizzes.length} câu`;
+        quizProgress.textContent = `${answered} / ${currentPracticeQuizzes.length} câu`;
       });
     });
   }
@@ -738,13 +744,158 @@
   });
 
   // ---------------------------------------------------------
+  // Adaptive 5-Question Practice Generator (Dễ -> Khó, Không trùng lặp)
+  // ---------------------------------------------------------
+  const PRACTICE_SEEN_KEY = "ttedu_practice_seen_v1";
+  let currentPracticeQuizzes = [];
+
+  function loadPracticeSeen() {
+    try {
+      return JSON.parse(localStorage.getItem(PRACTICE_SEEN_KEY) || "{}");
+    } catch {
+      return {};
+    }
+  }
+
+  function savePracticeSeen(map) {
+    try {
+      localStorage.setItem(PRACTICE_SEEN_KEY, JSON.stringify(map));
+    } catch {}
+  }
+
+  function buildPracticeQuizSet(subjectId, level) {
+    const secMap = { "lang-vi": "tv", "lang-en": "en", math: "math", science: "sci" };
+    const levelTierMap = { beginner: 1, intermediate: 2, advanced: 3 };
+    const diffLabelsByLevel = {
+      beginner: ["Nhận biết", "Nhận biết", "Thông hiểu", "Thông hiểu", "Vận dụng"],
+      intermediate: ["Nhận biết", "Thông hiểu", "Thông hiểu", "Vận dụng", "Vận dụng cao"],
+      advanced: ["Thông hiểu", "Vận dụng", "Vận dụng", "Vận dụng cao", "Vận dụng cao"]
+    };
+    const targetTiersByLevel = {
+      beginner: [1, 1, 2, 2, 3],
+      intermediate: [1, 2, 2, 3, 3],
+      advanced: [2, 2, 3, 3, 3]
+    };
+
+    const pool = [];
+    const subjObj = CURRICULUM.find((s) => s.id === subjectId);
+    if (subjObj) {
+      ["beginner", "intermediate", "advanced"].forEach((lv) => {
+        const list = (subjObj.levels[lv] && subjObj.levels[lv].quizzes) || [];
+        list.forEach((q) => {
+          pool.push({
+            q: q.q,
+            options: q.options,
+            answer: q.answer,
+            steps: q.steps || ["Xem đáp án đúng phía trên."],
+            tip: q.tip || "Đọc kỹ yêu cầu câu hỏi và loại trừ phương án nhiễu.",
+            sourceId: q.sourceId || "cet",
+            diffTier: levelTierMap[lv]
+          });
+        });
+      });
+    }
+
+    const mockSecId = secMap[subjectId];
+    if (typeof MOCK_EXAM_2026 !== "undefined" && mockSecId) {
+      const sec = MOCK_EXAM_2026.sections.find((s) => s.id === mockSecId);
+      if (sec) {
+        const len = sec.questions.length;
+        sec.questions.forEach((q, idx) => {
+          const tier = idx < len / 3 ? 1 : idx < (2 * len) / 3 ? 2 : 3;
+          pool.push({
+            q: q.q,
+            passage: q.passage || "",
+            options: q.options,
+            answer: q.answer,
+            steps: [q.solution || "Xem đáp án đúng."],
+            tip: "Áp dụng kiến thức chuẩn đề ĐGNL ĐHQG-HCM để giải nhanh.",
+            sourceId: "cet",
+            diffTier: tier
+          });
+        });
+      }
+    }
+
+    if (typeof MOCK_EXTRA_POOL !== "undefined" && mockSecId && MOCK_EXTRA_POOL[mockSecId]) {
+      MOCK_EXTRA_POOL[mockSecId].forEach((q, idx) => {
+        pool.push({
+          q: q.q,
+          options: q.options,
+          answer: q.answer,
+          steps: [q.solution || "Xem đáp án đúng."],
+          tip: "Kiểm tra lại điều kiện và quy tắc cốt lõi trước khi chọn đáp án.",
+          sourceId: "cet",
+          diffTier: idx % 3 === 0 ? 1 : idx % 3 === 1 ? 2 : 3
+        });
+      });
+    }
+
+    // Loại bỏ câu trùng nội dung trong pool
+    const uniquePool = [];
+    const seenInPool = new Set();
+    pool.forEach((item) => {
+      const key = item.q.trim();
+      if (!seenInPool.has(key)) {
+        seenInPool.add(key);
+        uniquePool.push(item);
+      }
+    });
+
+    const storeKey = `${subjectId}_${level}`;
+    const seenMap = loadPracticeSeen();
+    let seenList = Array.isArray(seenMap[storeKey]) ? seenMap[storeKey] : [];
+    const prevBatch = Array.isArray(seenMap[`${storeKey}_last`]) ? seenMap[`${storeKey}_last`] : [];
+
+    let unseen = uniquePool.filter((item) => !seenList.includes(item.q.trim()));
+    if (unseen.length < 5) {
+      // Hết kho câu chưa làm -> reset vòng mới nhưng vẫn loại trừ 5 câu vừa làm ở lượt ngay trước
+      seenList = [];
+      unseen = uniquePool.filter((item) => !prevBatch.includes(item.q.trim()));
+      if (unseen.length < 5) unseen = uniquePool.slice();
+    }
+
+    const desiredTiers = targetTiersByLevel[level] || [1, 2, 2, 3, 3];
+    const diffLabels = diffLabelsByLevel[level] || ["Nhận biết", "Thông hiểu", "Thông hiểu", "Vận dụng", "Vận dụng cao"];
+
+    const remaining = shuffleArray(unseen);
+    const chosen = [];
+
+    desiredTiers.forEach((tier) => {
+      let pickIdx = remaining.findIndex((item) => item.diffTier === tier);
+      if (pickIdx === -1) {
+        pickIdx = remaining.findIndex((item) => Math.abs(item.diffTier - tier) === 1);
+      }
+      if (pickIdx === -1) pickIdx = 0;
+      if (remaining.length > 0) {
+        chosen.push(remaining.splice(pickIdx, 1)[0]);
+      }
+    });
+
+    // Sắp xếp nghiêm ngặt từ dễ đến khó
+    chosen.sort((a, b) => a.diffTier - b.diffTier);
+
+    const finalSet = chosen.slice(0, 5).map((item, idx) => ({
+      ...shuffleQuestionOptions(item),
+      diffLabel: diffLabels[idx] || "Vận dụng"
+    }));
+
+    const batchKeys = finalSet.map((i) => i.q.trim());
+    seenMap[storeKey] = [...seenList, ...batchKeys];
+    seenMap[`${storeKey}_last`] = batchKeys;
+    savePracticeSeen(seenMap);
+
+    return finalSet;
+  }
+
+  // ---------------------------------------------------------
   // Grade Practice Quiz
   // ---------------------------------------------------------
   btnSubmitQuiz.addEventListener("click", () => {
-    const { lesson } = getCurrentLesson();
+    const quizzes = currentPracticeQuizzes;
     let score = 0;
 
-    lesson.quizzes.forEach((item, idx) => {
+    quizzes.forEach((item, idx) => {
       const checked = quizContainer.querySelector(`input[name="q_${idx}"]:checked`);
       const slot = document.getElementById(`sol-slot-${idx}`);
       const toggleBtn = quizContainer.querySelector(`.btn-toggle-sol[data-idx="${idx}"]`);
@@ -761,7 +912,7 @@
     });
 
     state.quizSubmitted = true;
-    const total = lesson.quizzes.length;
+    const total = quizzes.length;
     const percent = Math.round((score / total) * 100);
     quizProgress.textContent = `Điểm: ${score} / ${total} (${percent}%)`;
 
