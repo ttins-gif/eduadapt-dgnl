@@ -688,7 +688,7 @@
                 )
                 .join("")}
             </div>
-            <div class="solution-toggle-wrap">
+            <div class="solution-toggle-wrap hidden">
               <button type="button" class="btn btn-secondary btn-sm btn-toggle-sol" data-idx="${idx}" aria-expanded="false">
                 Xem lời giải
               </button>
@@ -916,6 +916,7 @@
       slot.innerHTML = renderSolutionHtml(item, isCorrect ? "correct" : "incorrect");
       slot.classList.remove("hidden");
       if (toggleBtn) {
+        if (toggleBtn.parentElement) toggleBtn.parentElement.classList.remove("hidden");
         toggleBtn.setAttribute("aria-expanded", "true");
         toggleBtn.textContent = "Ẩn lời giải";
       }
